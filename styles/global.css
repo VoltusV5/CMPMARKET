@@ -1,11 +1,14 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    height: 100vh;
+}
+
 .site {
     height: 100%;
     display: grid;
-    grid-template-columns: 20% 1fr;
+    grid-template-columns: 10% 1fr;
     grid-template-rows: 10% 80% 10%;
-    /*
-    grid-template-areas: "header header"
-                         "sidebar main"
-                         "sidebar footer";
-    */
 }
