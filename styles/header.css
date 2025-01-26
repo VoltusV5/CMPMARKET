@@ -1,4 +1,46 @@
 .site header {
     grid-column: 1 / -1;
-    background: tomato;
+}
+
+.header {
+    background: #181818;
+}
+
+.header__container {
+    max-width: 1504px;
+    margin: auto;
+    padding: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.header__search__container {
+    
+}
+
+.header__logo {
+    color: white;
+    padding: 15px;
+}
+
+.header__navbar {
+    display: flex;
+}
+
+.header__navbar__language,
+.header__navbar__theme,
+.header__navbar__sign_in {
+    color: white;
+    height: 49px;
+    width: 50px;
+    padding: 15px;
+    margin: 15px;
+}
+
+.header__search {
+    min-width: 1024px;
+    border-radius: 16px;
+    padding: 17px 100px 17px 20px;
+    font-size: 18px;
+    line-height: 24px;
 }
