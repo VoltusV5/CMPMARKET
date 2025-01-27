@@ -1,3 +1,5 @@
+/* MAIN SETTINGS HEADER*/
+
 .site header {
     grid-column: 1 / -1;
 }
@@ -7,35 +9,19 @@
 }
 
 .header__container {
+    height: 100%;
     max-width: 1504px;
     margin: auto;
-    padding: 32px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-.header__search__container {
-    
+    padding: 32px;    
 }
 
-.header__logo {
-    color: white;
-    padding: 15px;
-}
 
-.header__navbar {
-    display: flex;
-}
 
-.header__navbar__language,
-.header__navbar__theme,
-.header__navbar__sign_in {
-    color: white;
-    height: 49px;
-    width: 50px;
-    padding: 15px;
-    margin: 15px;
-}
+
+
+
+
+/* HEADER SEARCH */
 
 .header__search {
     min-width: 1024px;
@@ -44,3 +30,137 @@
     font-size: 18px;
     line-height: 24px;
 }
+
+.header__search__container {
+    margin-top: 24px;
+    margin-left: 12px;
+    margin-right: 20px;
+ }
+
+
+/* HEADER SEARCH BOTTOM */
+
+.header__search__marketplaces {
+    display: flex;
+    color: white;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 6px;
+    margin-right: 20px;
+    margin-left: 20px;
+    max-width: 1024px;
+}
+
+/* HEADER SEARCH TOP */
+
+.header__top {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+    
+
+
+
+
+
+
+
+
+/* LOGO */
+
+.header__logo {
+    color: white;
+    padding: 15px;
+}
+
+
+
+
+
+/* NAVBAR */
+
+.header__navbar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+
+
+
+
+.header__navbar__sign_in,
+.header__navbar__language,
+.header__navbar__theme {
+    height: 49px;
+    width: 50px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    
+}
+
+.header__navbar__sign_in,
+.header__navbar__theme {
+    margin-left: 24px;
+}
+
+/* Язык */
+.header__navbar__language a {
+    height: 80%;
+}
+
+.header__navbar__language a img{
+    height: 100%;
+    object-fit: contain;
+}
+
+.header__navbar__language p{
+    color: white;
+    margin-block-start: 0px;
+    margin-block-end: 0px;
+}
+
+
+/* Тема */
+.header__navbar__theme a {
+    height: 80%;
+}
+
+.header__navbar__theme a img{
+    height: 100%;
+    object-fit: contain;
+}
+
+.header__navbar__theme p{
+    color: white;
+    margin-block-start: 0px;
+    margin-block-end: 0px;
+}
+
+
+/* Войти */
+.header__navbar__sign_in a {
+    height: 80%;
+}
+
+.header__navbar__sign_in a img{
+    height: 100%;
+    object-fit: contain;
+}
+
+.header__navbar__sign_in p{
+    color: white;
+    margin-block-start: 0px;
+    margin-block-end: 0px;
+}
+
+
+
+
+
+
+

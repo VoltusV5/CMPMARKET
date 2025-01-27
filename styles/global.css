@@ -10,6 +10,9 @@ body {
 .site {
     height: 100%;
     display: grid;
+    /*
+    ASIDE
     grid-template-columns: 10% 1fr;
+    */
     grid-template-rows: 10% 80% 10%;
 }
