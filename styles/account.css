@@ -1,0 +1,22 @@
+body {
+    height: 100vh;
+}
+.account {
+    height: 15%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.user-info {
+    display: block;
+    height: 30%;
+}
+
+.user-info img {
+    height: 100%;
+}
+
+.user-info h4 {
+    margin: 0px;
+}
