@@ -1,14 +1,28 @@
-# pip install cloudipsp
-# ссылка на проект на гитхаб: https://github.com/cloudipsp/python-sdk
-# для использования нужна регистрация на платежном сервисе Fondy
+# нужна регистрация на Юmoney
+import flask
+from yandex_money.api import Wallet, ExternalPayment
+from yandex_money import api
 
-from cloudipsp import Api, Checkout
+from flask import request
 
-api = Api(merchant_id=1396424,
-          secret_key='test')    # id и ключ выдаются на сайте при регистрации компании
-checkout = Checkout(api=api)
-data = {
-    "currency": "RUB",
-    "amount": ""    # цена(нужно указывать нули в конце для корректного вывода на странице)
-}
-url = checkout.url(data).get('checkout_url')
+code1=''
+
+scope1 = ['account-info', 'operation-history']
+auth_url = Wallet.build_obtain_token_url(client_id=code1,redirect_uri='www.myurl', scope=scope1) + '&response_type=code'
+
+scope = ['account-info', 'operation-history']
+
+auth_url = Wallet.build_obtain_token_url(code,'www.myurl', scope)
+
+app = flask.Flask(__name__)
+
+
+@app.route('/', methods=['POST', 'GET'])
+def ymon():
+
+
+    token = api.Wallet.get_access_token(client_id=token1,
+                                        code=flask.request.args['code'],
+                                        redirect_uri='www.myurl')
+
+    return render_template('ya.html', token=token)
