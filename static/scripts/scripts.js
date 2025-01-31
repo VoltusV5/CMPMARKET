@@ -1,3 +1,5 @@
+/* Подгрузка товаров OZON */
+
 $(document).ready(function() {
     $.getJSON('/parser', function(data) {
         let container = $('#product-cards-container');
