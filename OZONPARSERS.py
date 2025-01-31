@@ -34,7 +34,7 @@ def colleсt_product_info(driver, url:str ='') -> dict:
     
     product_photo = soup.find('div', {'data-widget':'webGallery'}).find('img')['src']               #Поиск картинки
     
-    product_time = ''
+    product_time = soup.find('div', {'class':'yj3_27'}).text
 
     try:                                                                                            
         product_stat = soup.find(
@@ -92,7 +92,8 @@ def colleсt_product_info(driver, url:str ='') -> dict:
             'product_stars': product_stars,                          #Только количество звёзд
             'product_reviews': product_reviews,                      #Только количество отзывов с самим словом(Пример: 275 отзывов)
             'product_photo': product_photo,
-            'pruduct_url': url,
+            'product_url': url,
+            'product_time_delivery': product_time,
         }
     )
 
@@ -133,6 +134,7 @@ def get_products_links(item_name:str = 'наушники ') -> None:
         data = colleсt_product_info(driver, url)
         time.sleep(0.3)
         products_data.append(data)
+        break
 
     with open('PRODUCTS_DATA.json', 'w', encoding='UTF-8') as file:
         json.dump(products_data,file,indent=4,ensure_ascii=False)
