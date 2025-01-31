@@ -20,6 +20,7 @@
         <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/main.css') }}">
         <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/footer.css') }}">
         
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         
     </head>
     <body>
@@ -67,7 +68,7 @@
                         <div class="main-page__ozon__title">
                             <img src="https://ir.ozone.ru/s3/cms/eb/t8d/wc200/logo-logo-ozon-blue-png.png" alt="ozon">
                         </div>
-                        <div class="main-page__ozon__cards">
+                        <div id="product-cards-container" class="main-page__ozon__cards">
                             <div class="main-page__card">
                                 <a href="https://www.ozon.ru/product/korm-suhoy-royal-canin-sterilised-37-dlya-vzroslyh-sterilizovannyh-koshek-2-kg-29508517/?avtc=1&avte=1&avts=1738073916" target="_blank"><img src="static/img/card_photo.png" alt="product_card"></a>
                                 <h1 id="product_cost">3064 ₽</h4>
@@ -127,5 +128,5 @@
 
         </div>
     </body>
-    <script src="script.js"></script>
+    <script src="{{ url_for('static', filename='scripts/scripts.js') }}"></script>
 </html>
