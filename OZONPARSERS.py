@@ -34,6 +34,8 @@ def colleсt_product_info(driver, url:str ='') -> dict:
     
     product_photo = soup.find('div', {'data-widget':'webGallery'}).find('img')['src']               #Поиск картинки
     
+    product_time = ''
+
     try:                                                                                            
         product_stat = soup.find(
         'div',{"data-widget": "webSingleProductScore"}).find().text.strip()                         #В этом блоке происходит поиск отзывово и звёзд 
