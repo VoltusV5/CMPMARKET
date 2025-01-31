@@ -6,18 +6,18 @@
     <title>Регистрация CMPMARKET</title>
 </head>
 <body>
-    <form>
+    <form method="post" class="form-control">
         <h1>
             Создайте аккаунт
         </h1>
-        <p><input type="text" placeholder="Введите имя"></p>
-        <input type="email" placeholder="Введите почту">
+        <p><input type="text" name='nick' placeholder="Введите имя" class="form-control"></p>
+        <input type="email" name='mail' placeholder="Введите почту" class="form-control">
         <p>
-            <input type="password" placeholder="Введите пароль">
-            <input type="password" placeholder="Повторите пароль">
+            <input type="password" name='password1' placeholder="Введите пароль" class="form-control">
+            <input type="password" name='password2' placeholder="Повторите пароль" class="form-control">
         </p>
         <p>
-            <button>Зарегистрироваться</button>
+            <button class="btn btn-success">Зарегистрироваться</button>
         </p>
     </form>
     <p><a href="/sign_in">Войти в аккаунт</a></p>
