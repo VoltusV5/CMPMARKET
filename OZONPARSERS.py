@@ -10,15 +10,14 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 
-
 def colleсt_product_info(driver, url:str ='') -> dict:
     '''Функция которая ищет всю информацию про товары(кроме ссылки на товар)'''
 
     driver.switch_to.new_window('tab')
 
-    time.sleep(0.5)
+    time.sleep(0.01)
     driver.get(url=url)
-    time.sleep(0.5)
+    time.sleep(0.01)
 
     product_id = driver.find_element(By.XPATH, '//div[contains(text(), "Артикул: ")]'
     ).text.split('Артикул: ')[1]                                                                    # Поиск артикула
@@ -32,7 +31,7 @@ def colleсt_product_info(driver, url:str ='') -> dict:
     product_name = soup.find("div", {'data-widget':'webProductHeading'}).find(                      #Поиск названия
         'h1').text.strip().replace('\t','').replace('\n',' ')
     
-    product_photo = soup.find('div', {'data-widget':'webGallery'}).find('img')['src']               #Поиск картинки
+    product_photo = soup.find('div', {'data-widget':'webGallery'}).findAll('img')[-1]['src']        #Поиск картинки
     
     product_time = soup.find('div', {'class':'yj3_27'}).text
 
@@ -83,12 +82,12 @@ def colleсt_product_info(driver, url:str ='') -> dict:
     
     product_data = (
         {
-            'product_id': product_id,                                #Артикул
+            #'product_id': product_id,                                Артикул
             'product_name': product_name,                            
             'product_ozon_card_price': product_ozon_card_price,      #Цена по карте озон
             'product_discount_price': product_discount_price,        #Цена со скидкой
             'product_base_price': product_base_price,                #Цена без скидок и без озон карты
-            'product_statistic': product_stat,                       #Полная статистика товара, количество звёзд + колво отзывов
+            #'product_statistic': product_stat,                       Полная статистика товара, количество звёзд + колво отзывов
             'product_stars': product_stars,                          #Только количество звёзд
             'product_reviews': product_reviews,                      #Только количество отзывов с самим словом(Пример: 275 отзывов)
             'product_photo': product_photo,
@@ -105,25 +104,36 @@ def colleсt_product_info(driver, url:str ='') -> dict:
 
 
 
-def get_products_links(item_name:str = 'наушники ') -> None:
+def get_products_links(item_name:str = 'ручка') -> None:
     '''функция принимает запрос от пользователя и начинает суету'''
-    driver = uc.Chrome()
-    driver.implicitly_wait(3)
+
+    options = uc.ChromeOptions()
+    options.add_argument('--blink-settings=imagesEnabled=false')
+    
+    options.add_argument('--headless')  # Включаем headless-режим
+    options.add_argument('--no-sandbox')  # Отключаем sandbox для повышения стабильности
+    options.add_argument('--disable-dev-shm-usage')  # Решает проблемы с памятью в headless-режиме
+
+    user_agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
+    options.add_argument(f'--user-agent={user_agent}')
+
+    driver = uc.Chrome(use_subprocess=False,options=options)
+    driver.implicitly_wait(1)
 
     driver.get(url='https://ozon.ru')
-    time.sleep(1)
+    time.sleep(0.05)
 
     find_input = driver.find_element(By.NAME, 'text')
     find_input.clear()
     find_input.send_keys(item_name)
-    time.sleep(1)
+    time.sleep(0.05)
 
     find_input.send_keys(Keys.ENTER)
-    time.sleep(1)
+    time.sleep(0.05)
 
     current_url = f'{driver.current_url}&sorting=rating'
     driver.get(url=current_url)
-    time.sleep(1)
+    time.sleep(0.05)
 
     page_sourse = str(driver.page_source)
     soup = BeautifulSoup(page_sourse, 'lxml')
@@ -132,9 +142,8 @@ def get_products_links(item_name:str = 'наушники ') -> None:
     products_data = []
     for url in  products_url:
         data = colleсt_product_info(driver, url)
-        time.sleep(0.3)
+        time.sleep(0.05)
         products_data.append(data)
-        break
 
     with open('PRODUCTS_DATA.json', 'w', encoding='UTF-8') as file:
         json.dump(products_data,file,indent=4,ensure_ascii=False)
