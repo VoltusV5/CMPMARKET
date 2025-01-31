@@ -33,10 +33,12 @@ def registration():
         password2 = request.form['password2']
 
         login = Login(mail=mail, password=password1, nick=nick)
-
-        db.session.add(login)
-        db.session.commit()
-        return redirect('/')
+        try:
+            db.session.add(login)
+            db.session.commit()
+            return redirect('/')
+        except:
+            return 'Произошла ошибка'
     else:
         return render_template("registration.html")
 
