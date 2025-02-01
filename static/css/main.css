@@ -1,5 +1,5 @@
 .site main {
-    background: white;    
+    background: white;   
 }
 
 
@@ -26,7 +26,8 @@
 
 /* Магазины: Ozon */
 
-.main-page__ozon {
+.main-page__ozon,
+.main-page__yandex-market {
     min-width: auto;
     max-width: none;
     padding-left: 32px;
@@ -36,7 +37,16 @@
     margin-bottom: 32px;
 }
 
-.main-page__ozon__cards {
+.main-page__yandex-market__title {
+    margin-bottom: 32px;
+}
+
+.main-page__yandex-market__title img{
+    width: 17%;
+}
+
+.main-page__ozon__cards,
+.main-page__yandex-market__cards {
     display: flex;
     margin-bottom: 32px;
 }
@@ -44,6 +54,11 @@
 .main-page__card {
     width: calc(25% - 160px);
     margin-right: 32px;
+}
+
+.main-page__card a {
+    text-decoration: none;
+    color: inherit;
 }
 
 .main-page__card img {

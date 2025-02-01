@@ -92,7 +92,7 @@
 
 
 .header__navbar__sign_in,
-.header__navbar__language,
+.header__navbar__info,
 .header__navbar__theme {
     height: 49px;
     width: 50px;
@@ -109,16 +109,17 @@
 }
 
 /* Язык */
-.header__navbar__language a {
+.header__navbar__info a {
     height: 80%;
 }
 
-.header__navbar__language a img{
-    height: 100%;
+.header__navbar__info a img{
+    padding-top: 4px;
+    height: 90%;
     object-fit: contain;
 }
 
-.header__navbar__language p{
+.header__navbar__info p{
     color: white;
     margin-block-start: 0px;
     margin-block-end: 0px;
