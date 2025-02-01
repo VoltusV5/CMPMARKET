@@ -27,7 +27,9 @@
 /* Магазины: Ozon */
 
 .main-page__ozon,
-.main-page__yandex-market {
+.main-page__yandex-market,
+.main-page__AliExpress,
+.main-page__WildBerries {
     min-width: auto;
     max-width: none;
     padding-left: 32px;
@@ -41,12 +43,32 @@
     margin-bottom: 32px;
 }
 
+.main-page__AliExpress__title {
+    margin-bottom: 32px;
+}
+
+.main-page__WildBerries__title {
+    margin-bottom: 32px;
+}
+
 .main-page__yandex-market__title img{
     width: 17%;
 }
 
+.main-page__AliExpress__title img {
+    width: 15%;
+}
+
+.main-page__WildBerries__title img {
+    width: 18%;
+    position: relative;
+    left: -20px;
+}
+
 .main-page__ozon__cards,
-.main-page__yandex-market__cards {
+.main-page__yandex-market__cards,
+.main-page__AliExpress__cards,
+.main-page__WildBerries__cards {
     display: flex;
     margin-bottom: 32px;
 }
