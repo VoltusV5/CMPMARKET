@@ -9,7 +9,7 @@
 }
 
 .header__container {
-    height: 100%;
+    height: auto;
     max-width: 1504px;
     margin: auto;
     padding: 32px;    
@@ -51,10 +51,15 @@
     max-width: 1024px;
 }
 
+.header__search__marketplaces a {
+    text-decoration: none;
+    color: inherit;
+}
+
 /* HEADER SEARCH TOP */
 
 .header__top {
-    height: 100%;
+    height: auto;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -85,7 +90,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 100vh;
+    height: auto;
 }
 
 

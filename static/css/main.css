@@ -13,8 +13,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 32px;
-
+    padding: 32px 32px 0 32px;
 }
 
 .main-page__banner img {
@@ -30,26 +29,19 @@
 .main-page__yandex-market,
 .main-page__AliExpress,
 .main-page__WildBerries {
+    padding-top: 32px;
     min-width: auto;
     max-width: none;
     padding-left: 32px;
 }
 
-.main-page__ozon__title {
-    margin-bottom: 32px;
-}
-
-.main-page__yandex-market__title {
-    margin-bottom: 32px;
-}
-
-.main-page__AliExpress__title {
-    margin-bottom: 32px;
-}
-
+.main-page__ozon__title,
+.main-page__yandex-market__title,
+.main-page__AliExpress__title,
 .main-page__WildBerries__title {
     margin-bottom: 32px;
 }
+
 
 .main-page__yandex-market__title img{
     width: 17%;

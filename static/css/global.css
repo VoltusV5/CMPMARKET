@@ -3,6 +3,10 @@
     outline: none;
 }
 
+html {
+    scroll-behavior: smooth;
+}
+
 body {
     height: 100vh;
 }
@@ -11,5 +15,5 @@ body {
     height: 100%;
     display: grid;
 
-    grid-template-rows: 15% auto auto;
+    grid-template-rows: auto;
 }
