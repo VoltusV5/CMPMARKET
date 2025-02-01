@@ -3,3 +3,40 @@
     background: gray;
 }
 
+.footer__site-info {
+    padding-left: 32px;
+    display: grid;
+    grid-template-rows: auto;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+}
+
+.footer__site-info__contacts__social a{
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.footer__site-info__contacts__social h3 {
+    margin: 0;
+    margin-left: 7px;
+}
+
+.footer__site-info__contacts img {
+    width: 10%;
+}
+
+
+
+.footer__legal-information h2 {
+    padding-left: 32px;
+    text-align: center;
+}
+
+.horizontal-line {
+    width: 100%;
+    height: 2px;
+    background-color: #000;
+    border: 0;
+}
