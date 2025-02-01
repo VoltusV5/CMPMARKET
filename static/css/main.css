@@ -66,6 +66,7 @@
 }
 
 .main-page__card {
+    max-width: 300px;
     width: calc(25% - 160px);
     margin-right: 32px;
 }

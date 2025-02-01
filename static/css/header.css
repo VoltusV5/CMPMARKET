@@ -37,7 +37,6 @@
     margin-right: 20px;
  }
 
-
 /* HEADER SEARCH BOTTOM */
 
 .header__search__marketplaces {
@@ -76,10 +75,13 @@
 /* LOGO */
 
 .header__logo {
+    width: 106px;
     color: white;
-    padding: 15px;
 }
 
+.header__logo img {
+    width: 100%;
+ }
 
 
 
