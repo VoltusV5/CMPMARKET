@@ -4,7 +4,12 @@
 }
 
 .footer__site-info {
-    padding-left: 32px;
+    display: flex;
+    align-items: center;
+    justify-items: center;
+}
+
+.footer__site-info {
     display: grid;
     grid-template-rows: auto;
     grid-template-columns: 1fr 1fr 1fr 1fr;
@@ -24,13 +29,11 @@
 }
 
 .footer__site-info__contacts img {
-    width: 10%;
+    width: 5%;
 }
 
 
-
 .footer__legal-information h2 {
-    padding-left: 32px;
     text-align: center;
 }
 
