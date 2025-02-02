@@ -13,6 +13,9 @@ class Login(db.Model):
     password = db.Column(db.String, nullable=False)
     nick = db.Column(db.String, nullable=False)
 
+    def __repr__(self):
+        return self.id
+
 @app.route("/")
 @app.route("/index")
 def index():
@@ -52,9 +55,17 @@ def registration():
         return render_template("registration.html")
 
 
-@app.route("/sign_in")
+@app.route("/sign_in", methods=['POST', 'GET'])
 def sign_in():
-    return render_template("sign_in.html")
+    if request.method == 'POST':
+        mail = request.form['mail']
+        password = request.form['password']  
+        if Login.query.filter(Login.mail == mail).all() != [] and Login.query.filter(Login.password == password).all() != []:
+            return redirect('/') 
+        else:
+            return "Неверная почта или пароль" 
+    else:
+        return render_template("sign_in.html")
 
 if __name__ == '__main__':
     app.run(debug=True)
