@@ -1,6 +1,9 @@
 from flask import Flask, jsonify, render_template, redirect, request
 from flask_sqlalchemy import SQLAlchemy
 import json
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///market.db'
@@ -36,12 +39,28 @@ def account():
 @app.route("/registration", methods=['POST', 'GET'])
 def registration():
     if request.method == 'POST':
+        msg = MIMEMultipart()
+        from_email = 'cmpmarket2@gmail.com' #создал нам почту
+        psw = 'yqzo ntux nulx zgwi' # пароль только для нашего приложения
+        message = 'Сообщение о регистрации'
         nick = request.form['nick']
         mail = request.form['mail']
         password1 = request.form['password1']
         password2 = request.form['password2']
+        msg.attach(MIMEText(message, 'plain'))
+        if 'gmail.com' in mail:
+            server = smtplib.SMTP('smtp.gmail.com: 587')   
+        elif 'mail.ru' in mail:
+            server = smtplib.SMTP('smtp.mail.ru: 25')
+        else:
+            server = smtplib.SMTP('smtp.yandex.com: 465')
+        server.starttls()
+        server.login(from_email, psw)
+        server.sendmail(from_email, mail, msg.as_string())
+        server.quit()
 
         login = Login(mail=mail, password=password1, nick=nick)
+        
         try:
             db.session.add(login)
             db.session.commit()
