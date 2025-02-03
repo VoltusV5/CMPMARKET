@@ -1,5 +1,6 @@
+
 .site main {
-    background: white;   
+    background: #b6b6b6;   
 }
 
 
@@ -13,7 +14,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 32px 32px 0 32px;
+    padding: 32px 32px 32px 32px;
 }
 
 .main-page__banner img {
@@ -25,6 +26,22 @@
 
 /* Магазины: Ozon */
 
+.main-page__ozon {
+    background-color: #2359f4;
+}
+
+.main-page__yandex-market {
+    background-color: #ffc900;
+}
+
+.main-page__AliExpress {
+    background-color: #e52d03;
+}
+
+.main-page__WildBerries {
+    background-color: #c800b8;
+}
+
 .main-page__ozon,
 .main-page__yandex-market,
 .main-page__AliExpress,
@@ -33,6 +50,7 @@
     min-width: auto;
     max-width: none;
     padding-left: 32px;
+    padding-bottom: 32px;
 }
 
 .main-page__ozon__title,
@@ -40,21 +58,30 @@
 .main-page__AliExpress__title,
 .main-page__WildBerries__title {
     margin-bottom: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
+.main-page__ozon__title img {
+    width: 9%;
+    border-radius: 16px;
+}
 
 .main-page__yandex-market__title img{
     width: 17%;
+    border-radius: 16px;
 }
 
 .main-page__AliExpress__title img {
     width: 15%;
+    border-radius: 16px;
 }
 
 .main-page__WildBerries__title img {
     width: 18%;
+    border-radius: 16px;
     position: relative;
-    left: -20px;
 }
 
 .main-page__ozon__cards,
@@ -62,7 +89,8 @@
 .main-page__AliExpress__cards,
 .main-page__WildBerries__cards {
     display: flex;
-    margin-bottom: 32px;
+    align-items: center;
+    justify-content: center;
 }
 
 .main-page__card {
