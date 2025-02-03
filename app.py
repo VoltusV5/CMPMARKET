@@ -14,7 +14,7 @@ class Login(db.Model):
     nick = db.Column(db.String, nullable=False)
 
     def __repr__(self):
-        return self.id
+        return str(self.id)
 
 @app.route("/")
 @app.route("/index")
@@ -60,7 +60,7 @@ def sign_in():
     if request.method == 'POST':
         mail = request.form['mail']
         password = request.form['password']  
-        if Login.query.filter(Login.mail == mail).all() != [] and Login.query.filter(Login.password == password).all() != []:
+        if Login.query.filter(Login.mail == mail).all() != [] and Login.query.filter(Login.password == password).all() != [] and Login.query.filter(Login.mail == mail).all() == Login.query.filter(Login.password == password).all():
             return redirect('/') 
         else:
             return "Неверная почта или пароль" 
