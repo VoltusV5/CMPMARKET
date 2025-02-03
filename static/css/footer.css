@@ -5,14 +5,12 @@
 
 .footer__site-info {
     display: flex;
-    align-items: center;
     justify-items: center;
 }
 
 .footer__site-info {
     display: grid;
-    grid-template-rows: auto;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-columns: repeat(4, 1fr);
 }
 
 .footer__site-info__contacts__social a{

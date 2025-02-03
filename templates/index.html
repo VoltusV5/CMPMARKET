@@ -35,13 +35,16 @@
                             <img src="/static/img/logo/logo.png" alt="Логотип">
                         </div>
                         <div class="header__search__container">
-                            <input class="header__search" type="search" placeholder="Найти на CMPMARKET">
-                            <div class="header__search__marketplaces">
+                            <form class="header__search__container__input">
+                                <input class="header__search" type="search" name="query" placeholder="Найти на CMPMARKET">
+                                <button type="submit">Найти</button>
+                            </form>
+                            <nav class="header__search__marketplaces">
                                 <a href="#ozon-title">Ozon</a>
                                 <a href="#yandex-market-title">Яндекс Маркет</a>
                                 <a href="#aliexpress-title">AliExpress</a>
                                 <a href="#wildberries-title">Wildberries</a>
-                            </div>
+                            </nav>
                         </div>
                         <div class="header__navbar">
                             <div class="header__navbar__info">
@@ -112,7 +115,6 @@
                         <h3>Главная</h3>
                         <h3>О нас</h3>
                         <h3>Услуги</h3>
-                        <h3>Контакты</h3>
                     </section>
                     <section class="footer__site-info__contacts">
                         <h2>Контакты</h2>

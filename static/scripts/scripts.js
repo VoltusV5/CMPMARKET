@@ -1,3 +1,18 @@
+/* Получение запроса со строки ввода */
+document.querySelector('.header__search__container__input').addEventListener('submit', function(event) {
+    event.preventDefault();
+    const query = document.querySelector('.header__search').value;
+    fetch('/search', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ query: query })
+    })
+})
+
+
+
 /* Подгрузка товаров OZON */
 
 $(document).ready(function() {

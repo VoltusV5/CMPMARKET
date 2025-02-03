@@ -1,6 +1,7 @@
 from flask import Flask, jsonify, render_template, redirect, request
 from flask_sqlalchemy import SQLAlchemy
 import json
+import os
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///market.db'
@@ -20,12 +21,22 @@ def index():
 
 
 '''Получение товаров'''
-
 @app.route('/parser')
 def get_products():
     with open('parser/PRODUCTS_DATA.json', 'r', encoding='utf-8') as file:
         products = json.load(file)
     return jsonify(products)
+
+'''Получение информации из поля ввода поискового запроса'''
+@app.route('/search', methods=['POST'])
+def search():
+    data = request.get_json()
+    query = data.get('query')
+    query_json = 'queries/query.json'
+    os.makedirs(os.path.dirname(query_json), exist_ok=True)
+    with open(query_json, 'w', encoding='utf-8') as json_file:
+        json.dump({'query': query}, json_file, ensure_ascii=False)
+    return jsonify({'message': 'Запрос успешно обработан', 'query': query})
 
 
 @app.route("/account")

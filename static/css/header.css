@@ -24,17 +24,29 @@
 /* HEADER SEARCH */
 
 .header__search {
-    min-width: 1024px;
-    border-radius: 16px;
-    padding: 17px 100px 17px 20px;
+    width: 90%;
+    border: none;
+    padding: 0 20px 0 20px;
     font-size: 18px;
-    line-height: 24px;
 }
 
-.header__search__container {
+ .header__search__container__input {
+    background-color: white;
+    min-width: 1024px;
+    border-radius: 16px;
     margin-top: 24px;
     margin-left: 12px;
     margin-right: 20px;
+    line-height: 58px;
+ }
+
+ .header__search__container__input button {
+    width: 9%;
+    line-height: 228%;
+    border-radius: 16px;
+    border: 100px;
+    background-color: white;
+    border: 1px solid black;
  }
 
 /* HEADER SEARCH BOTTOM */
