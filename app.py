@@ -16,6 +16,9 @@ class Login(db.Model):
     password = db.Column(db.String, nullable=False)
     nick = db.Column(db.String, nullable=False)
 
+    def __repr__(self):
+        return str(self.id)
+
 @app.route("/")
 @app.route("/index")
 def index():
