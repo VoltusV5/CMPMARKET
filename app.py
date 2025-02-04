@@ -76,6 +76,9 @@ def registration():
         message = 'Сообщение о регистрации'
         nick = request.form['nick']
         mail = request.form['mail']
+        if db.session.query(Login.id).filter_by(mail=mail).first() is not None:
+            flash("Данная почта уже используется", 'info')
+            return render_template('registration.html')
         password1 = request.form['password1']
         password2 = request.form['password2']
         msg.attach(MIMEText(message, 'plain'))
@@ -85,10 +88,14 @@ def registration():
             server = smtplib.SMTP('smtp.mail.ru: 25')
         else:
             server = smtplib.SMTP('smtp.yandex.com: 465')
-        server.starttls()
-        server.login(from_email, psw)
-        server.sendmail(from_email, mail, msg.as_string())
-        server.quit()
+        try:
+            server.starttls()
+            server.login(from_email, psw)
+            server.sendmail(from_email, mail, msg.as_string())
+            server.quit()
+        except:
+            flash("Проблемы с почтой.", "info")
+            return render_template("registration.html")
 
         if password1 == password2:
             hashed_password = bcrypt.generate_password_hash(password1).decode('utf-8')
