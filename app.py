@@ -86,14 +86,8 @@ def registration():
         password1 = request.form['password1']
         password2 = request.form['password2']
         msg.attach(MIMEText(message, 'plain'))
-        if 'gmail.com' in mail:
-            server = smtplib.SMTP('smtp.gmail.com: 587')
-        elif 'mail.ru' in mail:
-            server = smtplib.SMTP_SSL('smtp.mail.ru: 25')
-        else:
-            server = smtplib.SMTP_SSL('smtp.yandex.ru: 465')
+        server = smtplib.SMTP_SSL('smtp.gmail.com', 465)
         try:
-            server.starttls()
             server.login(from_email, psw)
             server.sendmail(from_email, mail, msg.as_string())
             server.quit()
