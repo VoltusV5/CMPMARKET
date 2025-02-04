@@ -116,7 +116,7 @@ def sign_in():
             login_user(user)
             return redirect('/')
         else:
-            flash("Invalid Username or password!", "danger")
+            flash("Invalid Username or password!", "info")
             return render_template('sign_in.html')
     else:
         return render_template("sign_in.html")
