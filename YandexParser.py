@@ -17,7 +17,6 @@ def parser(html:str):
     s = []
 
     for link in products_html_div_all:
-        k = link
         products_info = {
             "Название": None,
             "Ссылка": None,
@@ -29,22 +28,18 @@ def parser(html:str):
             products_info['Название'] = link.find('div', {'data-baobab-name':'title'}).text
         except:
             products_info['Название'] = None
-        link = k
         try:
             products_info['Ссылка'] = 'https://market.yandex.ru'+link.find('div', {'data-baobab-name':'title'}).find('a')['href']
         except:
             products_info['Ссылка'] = None
-        link = k
         try:        
             products_info['Цена с картой яндекс'] = link.find('div', class_="_3iCDs").text
         except:
             products_info['Цена с картой яндекс'] = None
-        link = k
         try:
             products_info["Цена без карты яндекс"] = link.find('div', class_="_3BUO3").text
         except:
             products_info['Цена без карты яндекс'] = None
-        link = k
         try:
             products_info['Фото'] = link.find('div', {'data-baobab-name':'pictureGallery'}).find('img')['src']
         except:
