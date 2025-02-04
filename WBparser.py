@@ -42,7 +42,7 @@ def driver(item_name:str = 'макасины'):
     user_agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
     options.add_argument(f'--user-agent={user_agent}')
 
-    driver = uc.Chrome(use_subprocess=False,options=options)
+    driver = uc.Chrome(use_subprocess=False,options=options, version_main=132)
     driver.implicitly_wait(1)
 
     url = 'https://www.wildberries.ru/'
