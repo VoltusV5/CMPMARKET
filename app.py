@@ -37,7 +37,7 @@ class Login(db.Model, UserMixin):
         self.password_hash = pwhash.decode('utf8')
 
     def __repr__(self):
-        return str(self.id)
+        return str(self.nick)
 
 @app.route("/")
 @app.route("/index")
@@ -65,7 +65,11 @@ def search():
 @app.route("/account", methods=['POST', 'GET'])
 @login_required
 def account():
+    print(Login.query.get(current_user.get_id()))
     return render_template("account.html", current_user=current_user)
+
+
+    
 
 @app.route("/registration", methods=['POST', 'GET'])
 def registration():
@@ -85,9 +89,9 @@ def registration():
         if 'gmail.com' in mail:
             server = smtplib.SMTP('smtp.gmail.com: 587')
         elif 'mail.ru' in mail:
-            server = smtplib.SMTP('smtp.mail.ru: 25')
+            server = smtplib.SMTP_SSL('smtp.mail.ru: 25')
         else:
-            server = smtplib.SMTP('smtp.yandex.com: 465')
+            server = smtplib.SMTP_SSL('smtp.yandex.ru: 465')
         try:
             server.starttls()
             server.login(from_email, psw)
