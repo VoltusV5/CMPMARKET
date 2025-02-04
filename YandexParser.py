@@ -1,3 +1,4 @@
+#Парсит 16 товаров +-. Скорость примерно 11 сек
 import json
 import time
 import undetected_chromedriver as uc
@@ -24,9 +25,15 @@ def parser(html:str):
             "Цена без карты яндекс":None,
             "Фото":None,
         }
-        products_info['Название'] = link.find('div', {'data-baobab-name':'title'}).find('span').text
+        try:
+            products_info['Название'] = link.find('div', {'data-baobab-name':'title'}).text
+        except:
+            products_info['Название'] = None
         link = k
-        products_info['Ссылка'] = 'https://market.yandex.ru'+link.find('div', {'data-baobab-name':'title'}).find('a')['href']
+        try:
+            products_info['Ссылка'] = 'https://market.yandex.ru'+link.find('div', {'data-baobab-name':'title'}).find('a')['href']
+        except:
+            products_info['Ссылка'] = None
         link = k
         try:        
             products_info['Цена с картой яндекс'] = link.find('div', class_="_3iCDs").text
@@ -38,7 +45,10 @@ def parser(html:str):
         except:
             products_info['Цена без карты яндекс'] = None
         link = k
-        products_info['Фото'] = link.find('div', {'data-baobab-name':'pictureGallery'}).find('img')['src']
+        try:
+            products_info['Фото'] = link.find('div', {'data-baobab-name':'pictureGallery'}).find('img')['src']
+        except:
+            products_info['Фото'] = None
         s.append(products_info)
     
     with open('YandexProducts.json','w', encoding='UTF-8') as file:
@@ -57,8 +67,8 @@ def driver(item_name:str = 'Телефон'):
     user_agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
     options.add_argument(f'--user-agent={user_agent}')
 
-    driver = uc.Chrome(use_subprocess=False,options=options)
-    driver.implicitly_wait(1)
+    driver = uc.Chrome(use_subprocess=False,options=options,version_main=132)
+    driver.implicitly_wait(0.5)
 
     url = 'https://market.yandex.ru'
     driver.get(url=url)
@@ -67,14 +77,14 @@ def driver(item_name:str = 'Телефон'):
     find_input = driver.find_element(By.NAME, 'text')
     find_input.clear()
     find_input.send_keys(item_name)
-    time.sleep(1)
+    time.sleep(0.5)
 
     find_input.send_keys(Keys.ENTER)
-    time.sleep(1)
+    time.sleep(0.5)
 
     current_url = f'{driver.current_url}&how=rating'
     driver.get(url=current_url)
-    time.sleep(0.05)
+    time.sleep(1)
     
     html_text = str(driver.page_source)
     driver.quit()
@@ -85,4 +95,7 @@ def main():
 
 
 if __name__=='__main__':
+    t1 = time.perf_counter()
     main()
+    t2 = time.perf_counter()
+    print(t2-t1)
