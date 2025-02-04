@@ -15,7 +15,6 @@ def parser(text:str):
     s = []
     
     for link in products:
-        k = link
         info_products = {
         "Цена":None,
         "Название":None,
@@ -23,10 +22,7 @@ def parser(text:str):
         "Ссылка":None,
     }
         info_products['Название'] = link.find('h3').text
-        link = k
         info_products['Ссылка'] = 'https://avito.ru' + str(link.find('a', {"data-marker":"item-title"})['href'])
-        link = k
-
         try:
             info_products['Фото'] = link.find('img', class_='photo-slider-image-xjG6U')['src']
         except:
@@ -35,7 +31,6 @@ def parser(text:str):
             except:
                 info_products['Фото'] = None
 
-        link = k
         info_products['Цена'] = link.find('p',{'data-marker':'item-price'}).text
         s.append(info_products)
     with open('ProductsAvito.json', 'w', encoding='UTF-8') as file:
@@ -44,7 +39,6 @@ def parser(text:str):
 
 def get_info(item_name:str = 'Телефон') -> None:
     '''функция принимает запрос от пользователя и начинает суету'''
-    t2 = time.perf_counter()
     t = random.uniform(1, 3)
     options = uc.ChromeOptions()
     options.add_argument('--blink-settings=imagesEnabled=false')
@@ -52,13 +46,11 @@ def get_info(item_name:str = 'Телефон') -> None:
     options.add_argument('--headless')  # Включаем headless-режим
     options.add_argument('--no-sandbox')  # Отключаем sandbox для повышения стабильности
     options.add_argument('--disable-dev-shm-usage')  # Решает проблемы с памятью в headless-режиме
-    options.add_argument('--disable-javascript')
-    options.add_argument('--disable-css')
 
-    user_agent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
+    user_agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
     options.add_argument(f'--user-agent={user_agent}')
 
-    driver = uc.Chrome(use_subprocess=False, options=options)
+    driver = uc.Chrome(use_subprocess=False, options=options,version_main=132)
     driver.implicitly_wait(t)
 
     driver.get(url='https://avito.ru')
@@ -74,18 +66,11 @@ def get_info(item_name:str = 'Телефон') -> None:
     WebDriverWait(driver, 10).until(
         EC.presence_of_element_located((By.CLASS_NAME, 'styles-module-input-rA1dB'))
     )
-
-    t1 = time.perf_counter()
-    with open('page.html', 'w', encoding='UTF=8') as f:
-        f.write(str(driver.page_source))
+    text = str(driver.page_source)
     driver.quit()
-
-
-    with open('page.html', 'r', encoding='UTF=8') as f:
-        text = f.read()
     
     parser(text)
-    print(t1-t2)    
+    
 
 def main():
     get_info()
