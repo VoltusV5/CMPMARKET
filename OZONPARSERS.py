@@ -10,6 +10,9 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 
+def sort(products: list[dict]) -> None:
+    pass
+
 def colleсt_product_info(html:str ='') -> dict:
     '''Функция которая ищет всю информацию про товары(кроме ссылки на товар)'''
     
@@ -27,10 +30,12 @@ def colleсt_product_info(html:str ='') -> dict:
         product_info['Фото'] = product_info.setdefault('Фото', link.find('div', class_='i9y_23').find('img')['src'])
         product_info['Звёзды'] = product_info.setdefault('Звёзды', link.find('span', class_='p6b13-a4').find('span').text)
         product_info['Оценки'] = product_info.setdefault('Оценки', link.find_all('span', class_='p6b13-a4')[1].find('span').text)
+        product_info['Время'] = product_info.setdefault('Время', link.find('div', class_='b2121-a1').find('div').text)
         s.append(product_info)
 
     with open('Products_ozon.json','w', encoding='UTF-8') as file:
         json.dump(s, file, indent=4, ensure_ascii=False)
+
 
 def get_products_links(item_name:str = 'ручка') -> None:
     '''функция принимает запрос от пользователя и начинает суету'''
