@@ -124,13 +124,9 @@ def sorting_products(products: list[dict]) -> list:
     weight = []
     for item in products:
         rating = k_rating(float(item['Звёзды'].replace(' ','')))
-        feedback = k_feedback(int(item['Оценки'].replace('\u2009','').replace('отзыва', '')))
+        feedback = k_feedback(int(item['Оценки'].replace('\u2009','').replace(item['Оценки'][item['Оценки'].find('о'):], '')))
         time = k_time(item['Время'])
         price = k_price(min_, average,max_, int(item['Цена'].replace('₽','').replace('\u2009','')))
         weight.append(round(rating+feedback+time+price, 2))
     return weight
 
-
-with open('Products_ozon.json','r',encoding='UTF-8') as file:
-        products = json.load(file)
-        sorting_products(products)

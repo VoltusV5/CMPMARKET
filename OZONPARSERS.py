@@ -1,6 +1,5 @@
 #Парсер для озона который сохраняет всю информацию о первых 12+- выпавших продуктов в json файл
 #Он не запуститься если у вас не установлен драйвер на хром
-#Пизда время час ночи я дописал!!!!!
 import json
 import time
 import undetected_chromedriver as uc
@@ -11,9 +10,9 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 from Algoritm import sorting_products
 
-def sort():
-    with open('Products_ozon.json','r',encoding='UTF-8') as file:
-        products = json.load(file)
+def sort(products):
+    # with open('Products_ozon.json','r',encoding='UTF-8') as file:
+    #     products = json.load(file)
     weights = sorting_products(products)
     onion = list(zip(weights, products))
     onion.sort(key=lambda x: (x[0], int(x[1]['Цена'].replace('₽','').replace('\u2009',''))), reverse=True)
@@ -43,11 +42,11 @@ def colleсt_product_info(html:str ='') -> dict:
         product_info['Время'] = product_info.setdefault('Время', link.find('div', class_='b2121-a1').find('div').text)
         s.append(product_info)
 
-    with open('Products_ozon.json','w', encoding='UTF-8') as file:
-        json.dump(s, file, indent=4, ensure_ascii=False)
-    sort()
+    # with open('Products_ozon.json','w', encoding='UTF-8') as file:
+    #     json.dump(s, file, indent=4, ensure_ascii=False)
+    sort(s)
 
-def get_products_links(item_name:str = 'Айфон 14') -> None:
+def get_products_links(item_name:str = 'Айфон 15') -> None:
     '''функция принимает запрос от пользователя и начинает суету'''
 
     options = uc.ChromeOptions()
