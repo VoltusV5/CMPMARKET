@@ -27,7 +27,7 @@ $(document).ready(function() {
                         <h1 id="product_cost">${product.product_ozon_card_price}</h1>
                         <h3 id="product_name">${product.product_name}</h3>
                         <div class="product_reviews">
-                            <span>🌟${product.product_stars}</span>   
+                            <span>⭐️${product.product_stars}</span>   
                             <span>🗯️ ${product.product_reviews}</span>
                         </div>
                         <div class="product_date">
@@ -56,7 +56,7 @@ $(document).ready(function() {
                         <h1 id="product_cost">${product.product_ozon_card_price}</h1>
                         <h3 id="product_name">${product.product_name}</h3>
                         <div class="product_reviews">
-                            <span>🌟${product.product_stars}</span>   
+                            <span>⭐️${product.product_stars}</span>   
                             <span>🗯️ ${product.product_reviews}</span>
                         </div>
                         <div class="product_date">
@@ -85,7 +85,7 @@ $(document).ready(function() {
                         <h1 id="product_cost">${product.product_ozon_card_price}</h1>
                         <h3 id="product_name">${product.product_name}</h3>
                         <div class="product_reviews">
-                            <span>🌟${product.product_stars}</span>   
+                            <span>⭐️${product.product_stars}</span>   
                             <span>🗯️ ${product.product_reviews}</span>
                         </div>
                         <div class="product_date">
@@ -114,7 +114,7 @@ $(document).ready(function() {
                         <h1 id="product_cost">${product.product_ozon_card_price}</h1>
                         <h3 id="product_name">${product.product_name}</h3>
                         <div class="product_reviews">
-                            <span>🌟${product.product_stars}</span>   
+                            <span>⭐️${product.product_stars}</span>   
                             <span>🗯️ ${product.product_reviews}</span>
                         </div>
                         <div class="product_date">

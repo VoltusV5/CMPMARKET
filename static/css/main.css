@@ -99,49 +99,39 @@
     margin-right: 32px;
 }
 
-/* дизайн от нейронки GIGACHAT*/
+
+/* дизайн карточки*/
 
 .main-page__card {
-    transition: all 0.3s ease; /* Плавный переход при наведении */
-    cursor: pointer; /* Курсор мыши */
-  }
-  
-  .main-page__card:hover {
-    transform: scale(1.05); /* Немного увеличиваем размер при наведении */
-  }
-  
-
-/* закончился дизайн от нейронки*/
-
-
-/* дизайн от нейронки LE CHAT*/
-
-.main-page__card {
+    transition: all 0.3s ease;
+    cursor: pointer;
     background-color: #f0f8ff;
     border-radius: 12px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    overflow: hidden;
     transition: transform 0.2s, box-shadow 0.2s;
-    width: 300px;
-    margin: 20px;
     text-align: center;
     border: 1px solid #e0e0e0;
+
+    overflow: hidden;
+    width: 300px;
+    margin: 20px;
 }
 
 .main-page__card:hover {
-    transform: translateY(-10px);
+    transform: scale(1.05);
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
 }
 
 .main-page__card img {
     width: 100%;
     height: auto;
+    object-fit: contain;
     border-bottom: 1px solid #e0e0e0;
 }
 
 .main-page__card h1 {
     font-size: 24px;
-    color: #007BFF;
+    color: #10c45c;
     margin: 10px 0;
 }
 
@@ -149,6 +139,11 @@
     font-size: 18px;
     color: #343a40;
     margin: 10px 0;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+            line-clamp: 2; 
+    -webkit-box-orient: vertical;
 }
 
 .product_reviews {
@@ -164,71 +159,48 @@
 }
 
 .product_reviews span:first-child {
-    color: #ffc107;
+    color: #353535;
 }
 
 .product_date {
-    background-color: #e9ecef;
     padding: 10px;
     border-top: 1px solid #e0e0e0;
 }
 
 .product_date h5 {
     margin: 0;
-    color: #adb5bd;
+    color: #353535;
 }
 
-/* закончился дизайн от нейронки*/
-
-
-/* мой дизайн карточки */
-/*
 .main-page__card a {
     text-decoration: none;
     color: inherit;
 }
 
-.main-page__card img {
-    object-fit: contain;
-    width: 100%;
-    border-radius: 16px;
+.product_reviews img {
+    width: 6%;
 }
 
-#product_name,
-#product_cost,
-.product_reviews
- {
-    margin: 0px;
+/* Переливающаяся рамка товара */
+/* 
+.main-page__card {
+    --angle: 0deg; 
+    border: 4px solid;
     overflow: hidden;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-            line-clamp: 2; 
-    -webkit-box-orient: vertical;
-
-    padding-bottom: 4px;
-}
-
-#product_cost {
-    color: greenyellow;
-}
-
-.product_reviews {
-    display: flex;
-    justify-content: space-between;
-}
-
-.product_date {
-    background-color: blueviolet;
-    border-radius: 16px;
-    height: 36px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.product_date h5{
-    margin: 0;
-    left: 20px;
-    text-align: center;
-}
+    border-radius: 12px;
+    border-image: conic-gradient(from var(--angle), red, yellow, lime, aqua, blue, magenta, red) 1;
+    animation: rotate 10s linear infinite;
+  }
+  
+  @keyframes rotate {
+    to {
+      --angle: 360deg;
+    }
+  }
+  
+  @property --angle {
+    syntax: '<angle>';
+    initial-value: 0deg;
+    inherits: false;
+  }
 */
