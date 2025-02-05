@@ -38,8 +38,8 @@ def parser(html:str):
         product_info['Время'] = product_info.setdefault('Время', link.find('div',class_='product-card__bottom-wrap').find('p', class_='product-card__order-wrap').find('span',class_='btn-text').text)
         s.append(product_info)
     
-    with open('WBproducts.json', 'w', encoding='UTF-8') as file:
-        json.dump(s, file, indent=4, ensure_ascii=False)
+    # with open('WBproducts.json', 'w', encoding='UTF-8') as file:
+    #     json.dump(s, file, indent=4, ensure_ascii=False)
     sort(s)    
 
 def driver(item_name:str = 'макасины'):
