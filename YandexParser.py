@@ -7,7 +7,19 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
+from AlgoritmYA import sorting_products
 
+def sort(products):
+    # with open('Products_ozon.json','r',encoding='UTF-8') as file:
+    #     products = json.load(file)
+    weights = sorting_products(products)
+    onion = list(zip(weights, products))
+    onion.sort(key=lambda x: (x[0], int(x[1]['Цена'].replace('₽','').replace('\u2009',''))), reverse=True)
+    s = []
+    for i in range(4):
+        s.append(onion[i][1])
+    with open("BeautifulOzonProducts.json", 'w', encoding="UTF-8") as file:
+        json.dump(s,file,indent=4,ensure_ascii=False)
 
 
 def parser(html:str):
@@ -20,9 +32,12 @@ def parser(html:str):
         products_info = {
             "Название": None,
             "Ссылка": None,
-            "Цена с картой яндекс":None,
-            "Цена без карты яндекс":None,
+            "Цена":None,
+            "Цена без карты":None,
             "Фото":None,
+            'Время': None,
+            'Оценки':None,
+            'Звёзды':None,
         }
         try:
             products_info['Название'] = link.find('div', {'data-baobab-name':'title'}).text
@@ -33,22 +48,45 @@ def parser(html:str):
         except:
             products_info['Ссылка'] = None
         try:        
-            products_info['Цена с картой яндекс'] = link.find('div', class_="_3iCDs").text
+            products_info['Цена'] = link.find('div', class_="_3iCDs").find('span', class_='ds-text').text
         except:
-            products_info['Цена с картой яндекс'] = None
+            products_info['Цена'] = None
         try:
-            products_info["Цена без карты яндекс"] = link.find('div', class_="_3BUO3").text
+            products_info["Цена без карты"] = link.find('div', class_="_3BUO3").text
         except:
-            products_info['Цена без карты яндекс'] = None
+            products_info['Цена без карты'] = None
         try:
             products_info['Фото'] = link.find('div', {'data-baobab-name':'pictureGallery'}).find('img')['src']
         except:
             products_info['Фото'] = None
+        try:
+            products_info['Время'] = link.find('div', class_='_3-1X9').find('span', class_='_1yLiV').text
+        except:
+            products_info['Время'] = None
+        try:
+            products_info['Оценки'] = link.find('div',class_='_1ENFO').find('div',{'data-baobab-name':'rating'}).find_all('span', class_='ds-text')[-1].text
+        except:
+            products_info['Оценки'] = None
+        try:
+            products_info['Звёзды'] = link.find('div',class_='_1ENFO').find('div',{'data-baobab-name':'rating'}).find_all('span', class_='ds-text')[0].text
+        except:
+            products_info['Звёзды'] = None
+
         s.append(products_info)
     
-    with open('YandexProducts.json','w', encoding='UTF-8') as file:
-        json.dump(s,file,indent=4,ensure_ascii=False)
-        
+
+    help = []
+    for i in range(len(s)):
+        if s[i]['Название'] == None:
+            help.append(i)
+
+    for i in help:
+        del s[i]
+
+
+    # with open('YandexProducts.json','w', encoding='UTF-8') as file:
+    #     json.dump(s,file,indent=4,ensure_ascii=False)
+    sort(s)    
 
 
 def driver(item_name:str = 'Телефон'):
