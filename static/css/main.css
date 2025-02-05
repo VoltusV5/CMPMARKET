@@ -1,10 +1,5 @@
-main {
+.main {
     background: #b6b6b6;   
-}
-
-
-.main-page {
-    display: block;
 }
 
 /* Баннер */
@@ -23,27 +18,7 @@ main {
 }
 
 
-/* Магазины: Ozon */
-
-.main-page__ozon {
-    background-color: #2359f4;
-}
-
-.main-page__yandex-market {
-    background-color: #ffc900;
-}
-
-.main-page__AliExpress {
-    background-color: #e52d03;
-}
-
-.main-page__WildBerries {
-    background-color: #c800b8;
-}
-
-.main-page__avito {
-    background-color: #98cf26;
-}
+/* Общие настройки для магазинов */
 
 .main-page__ozon,
 .main-page__yandex-market,
@@ -68,32 +43,6 @@ main {
     justify-content: center;
 }
 
-.main-page__ozon__title img {
-    width: 9%;
-    border-radius: 16px;
-}
-
-.main-page__yandex-market__title img{
-    width: 17%;
-    border-radius: 16px;
-}
-/*
-.main-page__AliExpress__title img {
-    width: 15%;
-    border-radius: 16px;
-}
-*/
-.main-page__WildBerries__title img {
-    width: 18%;
-    border-radius: 16px;
-    position: relative;
-}
-
-.main-page__avito__title img {
-    width: 17%; 
-    border-radius: 16px;   
-}
-
 .main-page__ozon__cards,
 .main-page__yandex-market__cards,
 .main-page__AliExpress__cards,
@@ -104,15 +53,65 @@ main {
     justify-content: center;
 }
 
+/* локальные настройки магазинов: Ozon */
+.main-page__ozon {
+    background-color: #2359f4;
+}
+.main-page__ozon__title img {
+    width: 9%;
+    border-radius: 16px;
+}
+
+/* локальные настройки магазинов: Yandex market */
+.main-page__yandex-market {
+    background-color: #ffc900;
+}
+.main-page__yandex-market__title img{
+    width: 17%;
+    border-radius: 16px;
+}
+
+/* локальные настройки магазинов: AliExpress */
+/*
+.main-page__AliExpress {
+    background-color: #e52d03;
+}
+.main-page__AliExpress__title img {
+    width: 15%;
+    border-radius: 16px;
+}
+*/
+
+/* локальные настройки магазинов: WildBerries */
+.main-page__WildBerries {
+    background-color: #c800b8;
+}
+.main-page__WildBerries__title img {
+    width: 18%;
+    border-radius: 16px;
+    position: relative;
+}
+
+/* локальные настройки магазинов: avito */
+.main-page__avito {
+    background-color: #98cf26;
+}
+.main-page__avito__title img {
+    width: 17%; 
+    border-radius: 16px;   
+}
+
+
+
 /* дизайн карточки*/
 
+/* Стиль для карточки */
 .main-page__card {
     max-width: 300px;
     width: calc(25% - 160px);
-    margin-right: 32px;
-}
+    margin: 20px;
+    margin-bottom: 0px;
 
-.main-page__card {
     transition: all 0.3s ease;
     cursor: pointer;
     background-color: #f0f8ff;
@@ -121,17 +120,12 @@ main {
     transition: transform 0.2s, box-shadow 0.2s;
     text-align: center;
     border: 3px solid #e0e0e0;
-
     overflow: hidden;
-    width: 300px;
-    margin: 20px;
 }
-
 .main-page__card:hover {
     transform: scale(1.05);
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
 }
-
 .main-page__card img {
     width: 100%;
     height: auto;
@@ -139,12 +133,14 @@ main {
     border-bottom: 1px solid #e0e0e0;
 }
 
+/* Стиль для цены */
 .main-page__card h1 {
     font-size: 24px;
     color: #10c45c;
     margin: 10px 0;
 }
 
+/* Стиль для названия */
 .main-page__card h3 {
     font-size: 18px;
     color: #343a40;
@@ -156,61 +152,33 @@ main {
     -webkit-box-orient: vertical;
 }
 
+/* Стиль для отзывов */
 .product_reviews {
     display: flex;
     justify-content: center;
     align-items: center;
     margin: 10px 0;
 }
-
 .product_reviews span {
     margin: 0 5px;
     color: #6c757d;
 }
-
 .product_reviews span:first-child {
     color: #353535;
 }
 
+/* Стиль для даты доставки */
 .product_date {
     padding: 10px;
     border-top: 1px solid #e0e0e0;
 }
-
 .product_date h5 {
     margin: 0;
     color: #353535;
 }
 
+/* Обёртка перехода на сайт */
 .main-page__card a {
     text-decoration: none;
     color: inherit;
 }
-
-.product_reviews img {
-    width: 6%;
-}
-
-/* Переливающаяся рамка товара */
-/* 
-.main-page__card {
-    --angle: 0deg; 
-    border: 4px solid;
-    overflow: hidden;
-    border-radius: 12px;
-    border-image: conic-gradient(from var(--angle), red, yellow, lime, aqua, blue, magenta, red) 1;
-    animation: rotate 10s linear infinite;
-  }
-  
-  @keyframes rotate {
-    to {
-      --angle: 360deg;
-    }
-  }
-  
-  @property --angle {
-    syntax: '<angle>';
-    initial-value: 0deg;
-    inherits: false;
-  }
-*/
