@@ -128,6 +128,8 @@ $(document).ready(function() {
     });
 });
 
+/* Подгрузка товаров Avito */
+
 $(document).ready(function() {
     $.getJSON('/parser', function(data) {
         let container = $('#product-cards-container-avito');

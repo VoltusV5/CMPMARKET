@@ -5,12 +5,8 @@
 }
 
 .footer__site-info {
-    display: flex;
-    justify-items: center;
-}
-
-.footer__site-info {
     display: grid;
+    justify-items: center;
     grid-template-columns: repeat(4, 1fr);
 }
 

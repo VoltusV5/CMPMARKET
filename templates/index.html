@@ -1,25 +1,21 @@
 <!DOCTYPE html>
 <html lang="ru">
     <head>
-        <!-- Базовый макет -->
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="CMPMARKET — ваш универсальный маркетплейс для поиска товаров на различных платформах.">
         <title>CMPMARKET</title>
-        <!-- поджключение normalize файла, иконок, css, библиотеки JS jquery -->
         <link 
             rel="stylesheet"
-            type="text/css"
             href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
 
         <link rel="icon" href="{{ url_for('static', filename='img/ico/favicon_v1.png') }}" type="image/png">
 
-        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/global.css') }}">
-        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/buttons.css') }}">
-        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/fonts.css') }}">
-        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/header.css') }}">
-        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/aside.css') }}">
-        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/main.css') }}">
-        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/footer.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/fonts.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/global.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/header.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/footer.css') }}">
         
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         
@@ -48,16 +44,22 @@
                         </div>
                         <div class="header__navbar">
                             <div class="header__navbar__info">
-                                <a href="#"><img src="static/img/nav/info.png" alt="Информация"></a>
-                                <p>Инфо</p>
+                                <a href="#">
+                                    <img src="static/img/nav/info.png" alt="Информация">
+                                    <p>Инфо</p>
+                                </a>
                             </div>
                             <div class="header__navbar__theme">
-                                <a href="#"><img src="static/img/nav/night-mode_white.png" alt="Тема"></a>
-                                <p>Тема</p>
+                                <a href="#">
+                                    <img src="static/img/nav/night-mode_white.png" alt="Тема">
+                                    <p>Тема</p>
+                                </a>
                             </div>
                             <div class="header__navbar__sign_in">
-                                <a href="/sign_in"><img src="static/img/nav/user__sign_in.png" alt="Войти"></a>
-                                <p>Войти</p>
+                                <a href="/sign_in">
+                                    <img src="static/img/nav/user__sign_in.png" alt="Войти">
+                                    <p>Войти</p>
+                                </a>
                             </div>
                         </div>
                     </div>
@@ -134,9 +136,9 @@
                     <section class="footer__site-info__contacts">
                         <h2>Социальные сети</h2>
                         <div class="footer__site-info__contacts__social">
-                            <a href="#"><img src="/static/img/footer ico/telegram.png"><h3>Telegram</h3></a>
-                            <a href="#"><img src="/static/img/footer ico/discord.png"><h3>Discord</h3></a>
-                            <a href="#"><img src="/static/img/footer ico/vk.png"><h3>VK</h3></a>
+                            <a href="#"><img src="/static/img/footer ico/telegram.png" alt="телеграм"><h3>Telegram</h3></a>
+                            <a href="#"><img src="/static/img/footer ico/discord.png" alt="дискорд"><h3>Discord</h3></a>
+                            <a href="#"><img src="/static/img/footer ico/vk.png" alt="вк"><h3>VK</h3></a>
                         </div>
                     </section>
                 </div>
