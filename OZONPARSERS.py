@@ -10,99 +10,27 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 
-def colleсt_product_info(driver, url:str ='') -> dict:
+def colleсt_product_info(html:str ='') -> dict:
     '''Функция которая ищет всю информацию про товары(кроме ссылки на товар)'''
-
-    driver.switch_to.new_window('tab')
-
-    time.sleep(0.01)
-    driver.get(url=url)
-    time.sleep(0.01)
-
-    product_id = driver.find_element(By.XPATH, '//div[contains(text(), "Артикул: ")]'
-    ).text.split('Артикул: ')[1]                                                                    # Поиск артикула
     
-    page_sourse = str(driver.page_source)
-    soup = BeautifulSoup(page_sourse, 'lxml')
+    soup = BeautifulSoup(html, 'lxml')
+    all = soup.find_all('div', class_="xi6_23")
+    s = []
 
-    with open(f'product.html', 'w', encoding='UTF-8') as file:                                      #Сохранение HTML кода страницы с товаром ВОЗМОЖНО это поможет ускорить поиск
-        file.write(page_sourse)
-    
-    product_name = soup.find("div", {'data-widget':'webProductHeading'}).find(                      #Поиск названия
-        'h1').text.strip().replace('\t','').replace('\n',' ')
-    
-    product_photo = soup.find('div', {'data-widget':'webGallery'}).findAll('img')[-1]['src']        #Поиск картинки
-    
-    product_time = soup.find('div', {'class':'yj3_27'}).text
+    for link in all:
+        product_info = {}
 
-    try:                                                                                            
-        product_stat = soup.find(
-        'div',{"data-widget": "webSingleProductScore"}).find().text.strip()                         #В этом блоке происходит поиск отзывово и звёзд 
-        
-        if " • " in product_stat:
-            product_stars = product_stat.split(" • ")[0].strip()
-            product_reviews = product_stat.split(" • ")[1].strip()
-        else:
-            product_stat = product_stat
-    except:
-        product_stat = None
-        product_stars = None
-        product_reviews = None
+        product_info['Название'] = product_info.setdefault('Название', link.find('div', class_='xi7_23').find('span', class_="tsBody500Medium").text)
+        product_info['Цена с озон'] = product_info.setdefault('Цена с озон', link.find('div',class_='c3024-a0').find('span').text)
+        product_info['Цена без озон'] = product_info.setdefault('Цена без озон', link.find('div',class_='c3024-a0').find_all('span')[1].text)
+        product_info['Ссылка'] = product_info.setdefault('Ссылка', 'https://ozon.ru' + link.find('div', class_='xi7_23').find('a', class_="tile-clickable-element")['href'])
+        product_info['Фото'] = product_info.setdefault('Фото', link.find('div', class_='i9y_23').find('img')['src'])
+        product_info['Звёзды'] = product_info.setdefault('Звёзды', link.find('span', class_='p6b13-a4').find('span').text)
+        product_info['Оценки'] = product_info.setdefault('Оценки', link.find_all('span', class_='p6b13-a4')[1].find('span').text)
+        s.append(product_info)
 
-    try:
-        ozon_card_price_element = soup.find(                                                         
-            'span', string="c Ozon Картой").parent.find('div').find('span')                         #Проверяем наличие цены с озон картой
-        product_ozon_card_price = ozon_card_price_element.text.strip(
-        ) if ozon_card_price_element else ''
-
-        price_element = soup.find(
-            'span', string="без Ozon Карты").parent.parent.find('div').findAll('span')
-
-        product_discount_price = price_element[0].text.strip(
-        ) if price_element[0] else ''
-        product_base_price = price_element[1].text.strip(
-        ) if price_element[1] is not None else ''
-    except:
-        product_ozon_card_price = None
-        product_discount_price = None
-        product_base_price = None
-
-    # product price
-    try:
-        ozon_card_price_element = soup.find(
-            'span', string="c Ozon Картой").parent.find('div').find('span')
-    except AttributeError:                                                              #Если в предыдущем блоке нету цены с озон картой то тут найдуться остальные цены +-
-        card_price_div = soup.find(
-            'div', attrs={"data-widget": "webPrice"}).findAll('span')
-        try:
-            product_base_price = card_price_div[0].text.strip()
-            product_discount_price = card_price_div[1].text.strip()
-        except:
-            product_discount_price = None
-    
-    product_data = (
-        {
-            #'product_id': product_id,                                Артикул
-            'product_name': product_name,                            
-            'product_ozon_card_price': product_ozon_card_price,      #Цена по карте озон
-            'product_discount_price': product_discount_price,        #Цена со скидкой
-            'product_base_price': product_base_price,                #Цена без скидок и без озон карты
-            #'product_statistic': product_stat,                       Полная статистика товара, количество звёзд + колво отзывов
-            'product_stars': product_stars,                          #Только количество звёзд
-            'product_reviews': product_reviews,                      #Только количество отзывов с самим словом(Пример: 275 отзывов)
-            'product_photo': product_photo,
-            'product_url': url,
-            'product_time_delivery': product_time,
-        }
-    )
-
-    driver.close()
-    driver.switch_to.window(driver.window_handles[0])
-
-    return product_data
-
-
-
+    with open('Products_ozon.json','w', encoding='UTF-8') as file:
+        json.dump(s, file, indent=4, ensure_ascii=False)
 
 def get_products_links(item_name:str = 'ручка') -> None:
     '''функция принимает запрос от пользователя и начинает суету'''
@@ -117,7 +45,7 @@ def get_products_links(item_name:str = 'ручка') -> None:
     user_agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
     options.add_argument(f'--user-agent={user_agent}')
 
-    driver = uc.Chrome(use_subprocess=False,options=options)
+    driver = uc.Chrome(use_subprocess=False,options=options, version_main=132)
     driver.implicitly_wait(1)
 
     driver.get(url='https://ozon.ru')
@@ -136,19 +64,8 @@ def get_products_links(item_name:str = 'ручка') -> None:
     time.sleep(0.05)
 
     page_sourse = str(driver.page_source)
-    soup = BeautifulSoup(page_sourse, 'lxml')
-    products_url = list(set([f'https://ozon.ru{i["href"]}' for i in soup.find_all('a', class_='tile-clickable-element')]))          #поиск ссылок
+    colleсt_product_info(page_sourse)
 
-    products_data = []
-    for url in  products_url:
-        data = colleсt_product_info(driver, url)
-        time.sleep(0.05)
-        products_data.append(data)
-
-    with open('PRODUCTS_DATA.json', 'w', encoding='UTF-8') as file:
-        json.dump(products_data,file,indent=4,ensure_ascii=False)
-    
-    driver.close()
     driver.quit()
 
 def main():
