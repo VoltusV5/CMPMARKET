@@ -9,14 +9,25 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
+from Algoritm import sorting_products
 
-def sort(products: list[dict]) -> None:
-    pass
+def sort():
+    with open('Products_ozon.json','r',encoding='UTF-8') as file:
+        products = json.load(file)
+    weights = sorting_products(products)
+    onion = list(zip(weights, products))
+    onion.sort(key=lambda x: (x[0], int(x[1]['Цена'].replace('₽','').replace('\u2009',''))), reverse=True)
+    s = []
+    for i in range(4):
+        s.append(onion[i][1])
+    with open("BeautifulOzonProducts.json", 'w', encoding="UTF-8") as file:
+        json.dump(s,file,indent=4,ensure_ascii=False)
+        
 
 def colleсt_product_info(html:str ='') -> dict:
     '''Функция которая ищет всю информацию про товары(кроме ссылки на товар)'''
     
-    soup = BeautifulSoup(html, 'lxml')
+    soup = BeautifulSoup(html, 'html.parser')
     all = soup.find_all('div', class_="xi6_23")
     s = []
 
@@ -24,20 +35,19 @@ def colleсt_product_info(html:str ='') -> dict:
         product_info = {}
 
         product_info['Название'] = product_info.setdefault('Название', link.find('div', class_='xi7_23').find('span', class_="tsBody500Medium").text)
-        product_info['Цена с озон'] = product_info.setdefault('Цена с озон', link.find('div',class_='c3024-a0').find('span').text)
-        product_info['Цена без озон'] = product_info.setdefault('Цена без озон', link.find('div',class_='c3024-a0').find_all('span')[1].text)
+        product_info['Цена'] = product_info.setdefault('Цена', link.find('div',class_='c3024-a0').find_all('span')[1].text)
         product_info['Ссылка'] = product_info.setdefault('Ссылка', 'https://ozon.ru' + link.find('div', class_='xi7_23').find('a', class_="tile-clickable-element")['href'])
         product_info['Фото'] = product_info.setdefault('Фото', link.find('div', class_='i9y_23').find('img')['src'])
-        product_info['Звёзды'] = product_info.setdefault('Звёзды', link.find('span', class_='p6b13-a4').find('span').text)
-        product_info['Оценки'] = product_info.setdefault('Оценки', link.find_all('span', class_='p6b13-a4')[1].find('span').text)
+        product_info['Звёзды'] = product_info.setdefault('Звёзды', link.find_all('div', class_='yi0_23')[-1].find('span', class_='p6b13-a4').find('span').text)
+        product_info['Оценки'] = product_info.setdefault('Оценки', link.find_all('div', class_='yi0_23')[-1].find_all('span', class_='p6b13-a4')[-1].find('span').text)
         product_info['Время'] = product_info.setdefault('Время', link.find('div', class_='b2121-a1').find('div').text)
         s.append(product_info)
 
     with open('Products_ozon.json','w', encoding='UTF-8') as file:
         json.dump(s, file, indent=4, ensure_ascii=False)
+    sort()
 
-
-def get_products_links(item_name:str = 'ручка') -> None:
+def get_products_links(item_name:str = 'Айфон 14') -> None:
     '''функция принимает запрос от пользователя и начинает суету'''
 
     options = uc.ChromeOptions()
