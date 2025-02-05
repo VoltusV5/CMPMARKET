@@ -7,7 +7,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
-
+from fake_useragent import UserAgent
 
 def parser(text:str):
     soup = BeautifulSoup(text, 'html.parser')
@@ -20,6 +20,7 @@ def parser(text:str):
         "Название":None,
         "Фото":None,
         "Ссылка":None,
+        "Звёзды": None,
     }
         info_products['Название'] = link.find('h3').text
         info_products['Ссылка'] = 'https://avito.ru' + str(link.find('a', {"data-marker":"item-title"})['href'])
@@ -29,7 +30,7 @@ def parser(text:str):
             try:
                 info_products['Фото'] = link.find('div', class_='image-frame-wrapper-_NvbY')['src']
             except:
-                info_products['Фото'] = None
+                pass
 
         info_products['Цена'] = link.find('p',{'data-marker':'item-price'}).text
         s.append(info_products)
@@ -37,9 +38,9 @@ def parser(text:str):
         json.dump(s, file,indent=4, ensure_ascii=False)
 
 
-def get_info(item_name:str = 'Телефон') -> None:
+def get_info(item_name:str = 'Айфон 11') -> None:
     '''функция принимает запрос от пользователя и начинает суету'''
-    t = random.uniform(1, 3)
+    t = random.uniform(1, 8)
     options = uc.ChromeOptions()
     options.add_argument('--blink-settings=imagesEnabled=false')
     
@@ -54,7 +55,7 @@ def get_info(item_name:str = 'Телефон') -> None:
     driver.implicitly_wait(t)
 
     driver.get(url='https://avito.ru')
-    WebDriverWait(driver, 10).until(
+    WebDriverWait(driver, t).until(
         EC.presence_of_element_located((By.CLASS_NAME, 'styles-module-input-rA1dB'))
     )
     driver.execute_script("window.scrollBy(0, 10)")
@@ -63,7 +64,7 @@ def get_info(item_name:str = 'Телефон') -> None:
     find_input.send_keys(item_name)
     find_input.send_keys(Keys.ENTER)
     
-    WebDriverWait(driver, 10).until(
+    WebDriverWait(driver, t).until(
         EC.presence_of_element_located((By.CLASS_NAME, 'styles-module-input-rA1dB'))
     )
     text = str(driver.page_source)
