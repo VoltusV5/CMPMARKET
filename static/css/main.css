@@ -99,6 +99,90 @@
     margin-right: 32px;
 }
 
+/* дизайн от нейронки GIGACHAT*/
+
+.main-page__card {
+    transition: all 0.3s ease; /* Плавный переход при наведении */
+    cursor: pointer; /* Курсор мыши */
+  }
+  
+  .main-page__card:hover {
+    transform: scale(1.05); /* Немного увеличиваем размер при наведении */
+  }
+  
+
+/* закончился дизайн от нейронки*/
+
+
+/* дизайн от нейронки LE CHAT*/
+
+.main-page__card {
+    background-color: #f0f8ff;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    transition: transform 0.2s, box-shadow 0.2s;
+    width: 300px;
+    margin: 20px;
+    text-align: center;
+    border: 1px solid #e0e0e0;
+}
+
+.main-page__card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.main-page__card img {
+    width: 100%;
+    height: auto;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.main-page__card h1 {
+    font-size: 24px;
+    color: #007BFF;
+    margin: 10px 0;
+}
+
+.main-page__card h3 {
+    font-size: 18px;
+    color: #343a40;
+    margin: 10px 0;
+}
+
+.product_reviews {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 10px 0;
+}
+
+.product_reviews span {
+    margin: 0 5px;
+    color: #6c757d;
+}
+
+.product_reviews span:first-child {
+    color: #ffc107;
+}
+
+.product_date {
+    background-color: #e9ecef;
+    padding: 10px;
+    border-top: 1px solid #e0e0e0;
+}
+
+.product_date h5 {
+    margin: 0;
+    color: #adb5bd;
+}
+
+/* закончился дизайн от нейронки*/
+
+
+/* мой дизайн карточки */
+/*
 .main-page__card a {
     text-decoration: none;
     color: inherit;
@@ -147,3 +231,4 @@
     left: 20px;
     text-align: center;
 }
+*/
