@@ -37,7 +37,7 @@ class Login(db.Model, UserMixin):
         self.password_hash = pwhash.decode('utf8')
 
     def __repr__(self):
-        return str(self.id)
+        return str(self.nick)
 
 @app.route("/")
 @app.route("/index")
@@ -65,7 +65,11 @@ def search():
 @app.route("/account", methods=['POST', 'GET'])
 @login_required
 def account():
+    print(Login.query.get(current_user.get_id()))
     return render_template("account.html", current_user=current_user)
+
+
+    
 
 @app.route("/registration", methods=['POST', 'GET'])
 def registration():
@@ -76,19 +80,20 @@ def registration():
         message = 'Сообщение о регистрации'
         nick = request.form['nick']
         mail = request.form['mail']
+        if db.session.query(Login.id).filter_by(mail=mail).first() is not None:
+            flash("Данная почта уже используется", 'info')
+            return render_template('registration.html')
         password1 = request.form['password1']
         password2 = request.form['password2']
         msg.attach(MIMEText(message, 'plain'))
-        if 'gmail.com' in mail:
-            server = smtplib.SMTP('smtp.gmail.com: 587')
-        elif 'mail.ru' in mail:
-            server = smtplib.SMTP('smtp.mail.ru: 25')
-        else:
-            server = smtplib.SMTP('smtp.yandex.com: 465')
-        server.starttls()
-        server.login(from_email, psw)
-        server.sendmail(from_email, mail, msg.as_string())
-        server.quit()
+        server = smtplib.SMTP_SSL('smtp.gmail.com', 465)
+        try:
+            server.login(from_email, psw)
+            server.sendmail(from_email, mail, msg.as_string())
+            server.quit()
+        except:
+            flash("Проблемы с почтой.", "info")
+            return render_template("registration.html")
 
         if password1 == password2:
             hashed_password = bcrypt.generate_password_hash(password1).decode('utf-8')
@@ -116,7 +121,7 @@ def sign_in():
             login_user(user)
             return redirect('/')
         else:
-            flash("Invalid Username or password!", "danger")
+            flash("Invalid Username or password!", "info")
             return render_template('sign_in.html')
     else:
         return render_template("sign_in.html")
