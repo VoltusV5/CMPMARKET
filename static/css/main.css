@@ -37,7 +37,7 @@
 .main-page__AliExpress__title,
 .main-page__WildBerries__title,
 .main-page__avito__title {
-    margin-bottom: 32px;
+    margin-bottom: 12px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -110,7 +110,7 @@
     max-width: 300px;
     width: calc(25% - 160px);
     margin: 20px;
-    margin-bottom: 0px;
+    margin-bottom: 10px;
 
     transition: all 0.3s ease;
     cursor: pointer;
