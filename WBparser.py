@@ -7,8 +7,18 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
-
-
+from AlgoritmWB import sorting_products
+def sort(products):
+    # with open('Products_ozon.json','r',encoding='UTF-8') as file:
+    #     products = json.load(file)
+    weights = sorting_products(products)
+    onion = list(zip(weights, products))
+    onion.sort(key=lambda x: (x[0], int(x[1]['Цена'].replace('₽','').replace('\xa0',''))), reverse=True)
+    s = []
+    for i in range(4):
+        s.append(onion[i][1])
+    with open("Beautiful_Wildberries_Products.json", 'w', encoding="UTF-8") as file:
+        json.dump(s,file,indent=4,ensure_ascii=False)
 
 def parser(html:str):
     soup = BeautifulSoup(html, 'html.parser')
@@ -20,16 +30,17 @@ def parser(html:str):
 
         product_info['Название'] = product_info.setdefault('Название', link.find('span', class_='product-card__name').text.strip().replace('/',''))
         product_info['Цена с вб'] = product_info.setdefault('Цена с вб', link.find('ins',class_='price__lower-price').text)
-        product_info['Цена без вб'] = product_info.setdefault('Цена без вб', link.find('span',class_='price__wrap').find('del').text)
+        product_info['Цена'] = product_info.setdefault('Цена без вб', link.find('span',class_='price__wrap').find('del').text)
         product_info['Ссылка'] = product_info.setdefault('Ссылка', link.find('div', class_='product-card__wrapper').find('a')['href'])
         product_info['Фото'] = product_info.setdefault('Фото', link.find('div',class_='product-card__img-wrap').find('img')['src'])
         product_info['Звёзды'] = product_info.setdefault('Звёзды', link.find('p',class_='product-card__rating-wrap').find('span').text)
         product_info['Оценки'] = product_info.setdefault('Оценки', link.find('p',class_='product-card__rating-wrap').find('span', class_='product-card__count').text)
+        product_info['Время'] = product_info.setdefault('Время', link.find('div',class_='product-card__bottom-wrap').find('p', class_='product-card__order-wrap').find('span',class_='btn-text').text)
         s.append(product_info)
     
     with open('WBproducts.json', 'w', encoding='UTF-8') as file:
         json.dump(s, file, indent=4, ensure_ascii=False)
-        
+    sort(s)    
 
 def driver(item_name:str = 'макасины'):
     options = uc.ChromeOptions()
