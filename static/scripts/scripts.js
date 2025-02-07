@@ -1,20 +1,24 @@
 /* Получение запроса со строки ввода */
-document.querySelector('.header__search__container__input').addEventListener('submit', function(event) {
+document.querySelector('.header__search__container__input').addEventListener('submit', async function(event) {
     event.preventDefault();
     const query = document.querySelector('.header__search').value;
-    fetch('/search', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ query: query })
-    })
+    try {
+        const response = await fetch('/search', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ query: query })
+    });
+    
+    if (!response.ok) {
+        throw new Error('Network response was not ok ' + response.statusText);
+    }
 
-
-
+    const data = await response.json()
+    console.log(data)
 
     /* Подгрузка товаров OZON */
-
     $(document).ready(function() {
         $.getJSON('/parser', function(data) {
             let container = $('#product-cards-container-ozon');
@@ -156,4 +160,7 @@ document.querySelector('.header__search__container__input').addEventListener('su
         });
     });
 */
-})
+    } catch (error) {
+        console.error('Error:', error)
+    }
+});
