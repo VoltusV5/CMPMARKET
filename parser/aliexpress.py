@@ -2,6 +2,7 @@
 import json
 import time
 import random
+import threading
 import undetected_chromedriver as uc
 from bs4 import BeautifulSoup
 from selenium.webdriver.common.by import By
@@ -9,6 +10,9 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 from AlgoritmAli import sorting_products
+
+
+file_lock = threading.Lock()
 
 def sort(products):
     # with open('Products_ozon.json','r',encoding='UTF-8') as file:
@@ -72,12 +76,12 @@ def get_products_links(item_name:str = 'Айфон 15') -> None:
         "Mozilla/5.0 (Linux; Android 10; Redmi Note 7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.210 Mobile Safari/537.36",
         ]
     options.add_argument(f'--user-agent={user_agent[random.randint(0,6)]}')
+    with file_lock:
+        driver = uc.Chrome(use_subprocess=False,options=options, version_main=132)
+        driver.implicitly_wait(t)
 
-    driver = uc.Chrome(use_subprocess=False,options=options, version_main=132)
-    driver.implicitly_wait(t)
-
-    driver.get(url='https://aliexpress.ru')
-    time.sleep(t)
+        driver.get(url='https://aliexpress.ru')
+        time.sleep(t)
 
     find_input = driver.find_element(By.NAME, 'SearchText')
     find_input.clear()
@@ -91,8 +95,8 @@ def get_products_links(item_name:str = 'Айфон 15') -> None:
     parser(html)
 
 
-def main():
-    get_products_links()
+def mainAli(item_name='Телефон'):
+    get_products_links(item_name)
 
 
 if __name__=='__main__':

@@ -2,6 +2,7 @@
 #Он не запуститься если у вас не установлен драйвер на хром
 import json
 import time
+import threading
 import undetected_chromedriver as uc
 from bs4 import BeautifulSoup
 from selenium.webdriver.common.by import By
@@ -9,6 +10,8 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 from Algoritm import sorting_products
+
+file_lock = threading.Lock()
 
 def sort(products):
     # with open('Products_ozon.json','r',encoding='UTF-8') as file:
@@ -58,12 +61,12 @@ def get_products_links(item_name:str = 'Айфон 15') -> None:
 
     user_agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
     options.add_argument(f'--user-agent={user_agent}')
+    with file_lock:
+        driver = uc.Chrome(use_subprocess=False,options=options, version_main=132)
+        driver.implicitly_wait(1)
 
-    driver = uc.Chrome(use_subprocess=False,options=options, version_main=132)
-    driver.implicitly_wait(1)
-
-    driver.get(url='https://ozon.ru')
-    time.sleep(0.05)
+        driver.get(url='https://ozon.ru')
+        time.sleep(0.05)
 
     find_input = driver.find_element(By.NAME, 'text')
     find_input.clear()
@@ -73,17 +76,18 @@ def get_products_links(item_name:str = 'Айфон 15') -> None:
     find_input.send_keys(Keys.ENTER)
     time.sleep(0.05)
 
-    current_url = f'{driver.current_url}&sorting=rating'
-    driver.get(url=current_url)
-    time.sleep(0.05)
+    with file_lock:
+        current_url = f'{driver.current_url}&sorting=rating'
+        driver.get(url=current_url)
+        time.sleep(0.05)
 
     page_sourse = str(driver.page_source)
     colleсt_product_info(page_sourse)
 
     driver.quit()
 
-def main():
-    get_products_links()
+def mainOZON(item_name: str):
+    get_products_links(item_name)
 
 if __name__=='__main__':
     main()

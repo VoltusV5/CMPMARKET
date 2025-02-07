@@ -1,6 +1,7 @@
 #Парсит 30 карточек вб, за 6-8 секунд. Если какое то значение в словаре не будет найдено то в json файле будет 0!
 import json
 import time
+import threading
 import undetected_chromedriver as uc
 from bs4 import BeautifulSoup
 from selenium.webdriver.common.by import By
@@ -8,6 +9,8 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 from AlgoritmWB import sorting_products
+from globals import driver
+file_lock = threading.Lock()
 def sort(products):
     # with open('Products_ozon.json','r',encoding='UTF-8') as file:
     #     products = json.load(file)
@@ -42,19 +45,19 @@ def parser(html:str):
     #     json.dump(s, file, indent=4, ensure_ascii=False)
     sort(s)    
 
-def driver(item_name:str = 'макасины'):
-    options = uc.ChromeOptions()
-    options.add_argument('--blink-settings=imagesEnabled=false')
+def driver1(item_name:str = 'макасины'):
+    # options = uc.ChromeOptions()
+    # options.add_argument('--blink-settings=imagesEnabled=false')
     
-    options.add_argument('--headless')  # Включаем headless-режим
-    options.add_argument('--no-sandbox')  # Отключаем sandbox для повышения стабильности
-    options.add_argument('--disable-dev-shm-usage')  # Решает проблемы с памятью в headless-режиме
+    # options.add_argument('--headless')  # Включаем headless-режим
+    # options.add_argument('--no-sandbox')  # Отключаем sandbox для повышения стабильности
+    # options.add_argument('--disable-dev-shm-usage')  # Решает проблемы с памятью в headless-режиме
 
-    user_agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
-    options.add_argument(f'--user-agent={user_agent}')
+    # user_agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
+    # options.add_argument(f'--user-agent={user_agent}')
 
-    driver = uc.Chrome(use_subprocess=False,options=options, version_main=132)
-    driver.implicitly_wait(1)
+    # driver = uc.Chrome(use_subprocess=False,options=options, version_main=132)
+    # driver.implicitly_wait(1)
 
     url = 'https://www.wildberries.ru/'
     driver.get(url=url)
@@ -74,12 +77,9 @@ def driver(item_name:str = 'макасины'):
 
     driver.quit()
 
-def main():
-    driver()
+def mainWB(driver, item_name: str):
+    driver1(item_name)
 
 
 if __name__=='__main__':
-    t1 = time.perf_counter()
-    main()
-    t2 = time.perf_counter()
-    print(t2-t1)
+    mainWB()

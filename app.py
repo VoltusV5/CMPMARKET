@@ -2,13 +2,18 @@ from flask import Flask, jsonify, render_template, redirect, request, flash
 from flask_sqlalchemy import SQLAlchemy
 import json
 import os
+import sys
 import smtplib
+import threading
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import LoginManager, UserMixin, current_user, login_required, login_user, logout_user
 from flask_bcrypt import Bcrypt
 from flask_migrate import Migrate
+
+sys.path.append(os.path.join(os.path.dirname(__file__), 'parser'))
+from All_parsers import *
 
 app = Flask(__name__)
 app.secret_key = 'secret-key'
@@ -21,6 +26,20 @@ login_manager.login_view = "login"
 login_manager.login_message_category = "info"
 migrate = Migrate(app, db, render_as_batch=True)
 bcrypt = Bcrypt(app)
+
+
+def parsers(query: str):
+    threads = [
+        threading.Thread(target=mainWB, args=(driver, query)),
+        threading.Thread(target=mainYA, args=(driver, query)),
+        # threading.Thread(target=mainOZON, args=(query,)),
+        # threading.Thread(target=mainAli, args=(query,))
+    ]
+    for thread in threads:
+        thread.start()
+    
+    for thread in threads:
+        thread.join()
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -44,12 +63,12 @@ class Login(db.Model, UserMixin):
 def index():
     return render_template("index.html")
 
-'''Получение товаров'''
-@app.route('/parser')
-def get_products():
-    with open('parser/PRODUCTS_DATA.json', 'r', encoding='utf-8') as file:
-        products = json.load(file)
-    return jsonify(products)
+# '''Получение товаров'''
+# @app.route('/parser')
+# def get_products():
+#     with open('parser/PRODUCTS_DATA.json', 'r', encoding='utf-8') as file:
+#         products = json.load(file)
+#     return jsonify(products)
 
 '''Получение информации из поля ввода поискового запроса'''
 @app.route('/search', methods=['POST'])
@@ -58,6 +77,7 @@ def search():
     query = data.get('query')
     query_json = 'queries/query.json'
     os.makedirs(os.path.dirname(query_json), exist_ok=True)
+    parsers(query)
     with open(query_json, 'w', encoding='utf-8') as json_file:
         json.dump({'query': query}, json_file, ensure_ascii=False)
     return jsonify({'message': 'Запрос успешно обработан', 'query': query})
