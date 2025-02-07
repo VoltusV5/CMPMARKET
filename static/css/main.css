@@ -72,7 +72,7 @@
 }
 
 /* локальные настройки магазинов: AliExpress */
-/*
+
 .main-page__AliExpress {
     background-color: #e52d03;
 }
@@ -80,7 +80,7 @@
     width: 15%;
     border-radius: 16px;
 }
-*/
+
 
 /* локальные настройки магазинов: WildBerries */
 .main-page__WildBerries {
@@ -93,6 +93,7 @@
 }
 
 /* локальные настройки магазинов: avito */
+/*
 .main-page__avito {
     background-color: #98cf26;
 }
@@ -100,7 +101,7 @@
     width: 17%; 
     border-radius: 16px;   
 }
-
+*/
 
 
 /* дизайн карточки*/
