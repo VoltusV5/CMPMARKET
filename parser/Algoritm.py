@@ -94,13 +94,23 @@ def k_time(product_time: str):
 
 
 def min_price(products_info:list[dict]) -> int:
-    return int(min(products_info, key=lambda x: int(x['Цена'].replace('₽','').replace('\u2009','')))['Цена'].replace('₽','').replace('\u2009',''))
+    try:
+        k = int(min(products_info, key=lambda x: int(x['Цена'].replace('₽','').replace('\u2009','')))['Цена'].replace('₽','').replace('\u2009',''))
+    except:
+        k=10000000000000000
+    return k
 
 def max_price(products_info:list[dict]) -> int:
-    return int(max(products_info, key=lambda x: int(x['Цена'].replace('₽','').replace('\u2009','')))['Цена'].replace('₽','').replace('\u2009',''))
+    try:
+        k = int(max(products_info, key=lambda x: int(x['Цена'].replace('₽','').replace('\u2009','')))['Цена'].replace('₽','').replace('\u2009',''))
+    except:
+        k = -1
+    return k
 
 def average_value(products_info:list[dict]) -> float:
     k = 0
+    if len(products_info) == 0:
+        return 0
     for i in products_info:
         k += int(i['Цена'].replace('₽','').replace('\u2009',''))
     return k/len(products_info)
@@ -123,8 +133,14 @@ def sorting_products(products: list[dict]) -> list:
     average = average_value(products)
     weight = []
     for item in products:
-        rating = k_rating(float(item['Звёзды'].replace(' ','')))
-        feedback = k_feedback(int(item['Оценки'].replace('\u2009','').replace(item['Оценки'][item['Оценки'].find('о'):], '')))
+        try:
+            rating = k_rating(float(item['Звёзды'].replace(' ','')))
+        except:
+            rating = 0.1
+        try:
+            feedback = k_feedback(int(item['Оценки'].replace('\u2009','').replace(item['Оценки'][item['Оценки'].find('о'):], '')))
+        except:
+            feedback = 0.1
         time = k_time(item['Время'])
         price = k_price(min_, average,max_, int(item['Цена'].replace('₽','').replace('\u2009','')))
         weight.append(round(rating+feedback+time+price, 2))

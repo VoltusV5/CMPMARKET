@@ -23,7 +23,7 @@ def sort(products):
     s = []
     for i in range(4):
         s.append(onion[i][1])
-    with open("BeautifulAliexpressProducts.json", 'w', encoding="UTF-8") as file:
+    with open("parser/BeautifulAliexpressProducts.json", 'w', encoding="UTF-8") as file:
         json.dump(s,file,indent=4,ensure_ascii=False)
 
 
