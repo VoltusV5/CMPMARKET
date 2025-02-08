@@ -1,6 +1,9 @@
 #Парсит 16 товаров +-. Скорость примерно 11 сек
 import json
 import time
+import random
+import os
+import threading
 import undetected_chromedriver as uc
 from bs4 import BeautifulSoup
 from selenium.webdriver.common.by import By
@@ -8,6 +11,8 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 from AlgoritmYA import sorting_products
+
+file_lock = threading.Lock()
 
 def sort(products):
     # with open('Products_ozon.json','r',encoding='UTF-8') as file:
@@ -18,7 +23,7 @@ def sort(products):
     s = []
     for i in range(4):
         s.append(onion[i][1])
-    with open("BeautifulYandexProducts.json", 'w', encoding="UTF-8") as file:
+    with open("parser/BeautifulYandexProducts.json", 'w', encoding="UTF-8") as file:
         json.dump(s,file,indent=4,ensure_ascii=False)
 
 
@@ -89,10 +94,13 @@ def parser(html:str):
     sort(s)    
 
 
-def driver(item_name:str = 'Телефон'):
+def driver1(item_name:str = 'Телефон'):
     options = uc.ChromeOptions()
     options.add_argument('--blink-settings=imagesEnabled=false')
-    
+    cache_dir = r"C:\temp\cache_ya"  # Уникальный путь
+    user_data_dir = r"C:\temp\profile_ya"  # Уникальный профиль
+    os.makedirs(cache_dir, exist_ok=True)
+    os.makedirs(user_data_dir, exist_ok=True)
     options.add_argument('--headless')  # Включаем headless-режим
     options.add_argument('--no-sandbox')  # Отключаем sandbox для повышения стабильности
     options.add_argument('--disable-dev-shm-usage')  # Решает проблемы с памятью в headless-режиме
@@ -100,7 +108,10 @@ def driver(item_name:str = 'Телефон'):
     user_agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
     options.add_argument(f'--user-agent={user_agent}')
 
-    driver = uc.Chrome(use_subprocess=False,options=options,version_main=132)
+
+
+    driver = uc.Chrome(use_subprocess=False,options=options, version_main=132, executable_path=r"C:\temp\chromedriver.exe",
+        cache_dir=cache_dir, user_data_dir=user_data_dir)
     driver.implicitly_wait(0.5)
 
     url = 'https://market.yandex.ru'
@@ -115,20 +126,18 @@ def driver(item_name:str = 'Телефон'):
     find_input.send_keys(Keys.ENTER)
     time.sleep(0.5)
 
-    current_url = f'{driver.current_url}&how=rating'
-    driver.get(url=current_url)
-    time.sleep(1)
+    with file_lock:
+        current_url = f'{driver.current_url}&how=rating'
+        driver.get(url=current_url)
+        time.sleep(1)
     
     html_text = str(driver.page_source)
     driver.quit()
     parser(html_text)
 
-def main():
-    driver()
+def mainYA(item_name: str):
+    driver1(item_name)
 
 
 if __name__=='__main__':
-    t1 = time.perf_counter()
-    main()
-    t2 = time.perf_counter()
-    print(t2-t1)
+    mainYA()
