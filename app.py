@@ -54,6 +54,9 @@ def main(query):
     p3.join()
     p4.join()
 
+
+
+
 @login_manager.user_loader
 def load_user(user_id):
     return Login.query.get(int(user_id))
@@ -72,13 +75,25 @@ class Login(db.Model, UserMixin):
     def __repr__(self):
         return str(self.nick)
 
-
 @app.route("/")
 @app.route("/index")
 def index():
     return render_template("index.html")
 
-'''Получение товаров'''
+"""Получение информации из поля ввода поискового запроса"""
+
+
+@app.route("/search", methods=["POST"])
+def search():
+    data = request.get_json()
+    query = data.get("query")
+    query_json = "queries/query.json"
+    os.makedirs(os.path.dirname(query_json), exist_ok=True)
+    main(query)
+    with open(query_json, "w", encoding="utf-8") as json_file:
+        json.dump({"query": query}, json_file, ensure_ascii=False)
+    return jsonify({"message": "Запрос успешно обработан", "query": query})
+    '''Отрисовка карточек товара'''
 @app.route('/parser/ozon')
 def get_ozon_products():
     with open('parser/BeautifulOzonProducts.json', 'r', encoding='utf-8') as file:
@@ -99,21 +114,6 @@ def get_aliexpress_products():
     with open('parser/BeautifulAliexpressProducts.json', 'r', encoding='utf-8') as file:
         products = json.load(file)
     return jsonify(products)
-
-"""Получение информации из поля ввода поискового запроса"""
-
-
-@app.route("/search", methods=["POST"])
-def search():
-    data = request.get_json()
-    query = data.get("query")
-    query_json = "queries/query.json"
-    os.makedirs(os.path.dirname(query_json), exist_ok=True)
-    main(query)
-    with open(query_json, "w", encoding="utf-8") as json_file:
-        json.dump({"query": query}, json_file, ensure_ascii=False)
-    return jsonify({"message": "Запрос успешно обработан", "query": query})
-
 
 @app.route("/account", methods=["POST", "GET"])
 @login_required
