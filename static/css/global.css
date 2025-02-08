@@ -14,5 +14,5 @@ body {
 .site {
     height: 100%;
     display: grid;
-    grid-template-rows: auto;
+    grid-template-rows: min-content;
 }
