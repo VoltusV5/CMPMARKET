@@ -21,7 +21,7 @@ from flask_bcrypt import Bcrypt
 from flask_migrate import Migrate
 
 sys.path.append(os.path.join(os.path.dirname(__file__), "parser"))
-from All_parsers import *
+from parser.All_parsers import *
 
 app = Flask(__name__)
 app.secret_key = "secret-key"
