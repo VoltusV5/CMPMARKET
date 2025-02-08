@@ -1,7 +1,14 @@
+
+
+
+
 /* Получение запроса со строки ввода */
 document.querySelector('.header__search__container__input').addEventListener('submit', async function(event) {
     event.preventDefault();
     const query = document.querySelector('.header__search').value;
+
+    document.getElementById('loading').style.display = 'block';
+
     try {
         const response = await fetch('/search', {
             method: 'POST',
@@ -17,6 +24,8 @@ document.querySelector('.header__search__container__input').addEventListener('su
 
     const data = await response.json()
     console.log(data)
+
+    document.getElementById('loading').style.display = 'none';
 
     $(document).ready(function() {
         $.getJSON('/parser/ozon', function(data) {
@@ -40,7 +49,7 @@ document.querySelector('.header__search__container__input').addEventListener('su
                         <div class="main-page__card">
                             <a href="${product.Ссылка}" target="_blank">
                                 <img src="${product.Фото}" alt="Картинка продукта">
-                                <h1 id="product_cost">${product.Цена} ₽</h1>
+                                <h1 id="product_cost">${product.Цена}</h1>
                                 <h3 id="product_name">${product.Название}</h3>
                                 <div class="product_reviews">
                                     <span>⭐️${product.Звёзды}</span>   

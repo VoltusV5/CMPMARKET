@@ -93,7 +93,7 @@ def search():
     with open(query_json, "w", encoding="utf-8") as json_file:
         json.dump({"query": query}, json_file, ensure_ascii=False)
     return jsonify({"message": "Запрос успешно обработан", "query": query})
-    '''Отрисовка карточек товара'''
+'''Отрисовка карточек товара'''
 @app.route('/parser/ozon')
 def get_ozon_products():
     with open('parser/BeautifulOzonProducts.json', 'r', encoding='utf-8') as file:
