@@ -78,13 +78,27 @@ class Login(db.Model, UserMixin):
 def index():
     return render_template("index.html")
 
-
-# '''Получение товаров'''
-# @app.route('/parser')
-# def get_products():
-#     with open('parser/PRODUCTS_DATA.json', 'r', encoding='utf-8') as file:
-#         products = json.load(file)
-#     return jsonify(products)
+'''Получение товаров'''
+@app.route('/parser/ozon')
+def get_ozon_products():
+    with open('parser/BeautifulOzonProducts.json', 'r', encoding='utf-8') as file:
+        products = json.load(file)
+    return jsonify(products)
+@app.route('/parser/wildberries')
+def get_wildberries_products():
+    with open('parser/Beautiful_Wildberries_Products.json', 'r', encoding='utf-8') as file:
+        products = json.load(file)
+    return jsonify(products)
+@app.route('/parser/yandex')
+def get_yandexmarket_products():
+    with open('parser/BeautifulYandexProducts.json', 'r', encoding='utf-8') as file:
+        products = json.load(file)
+    return jsonify(products)
+@app.route('/parser/aliexpress')
+def get_aliexpress_products():
+    with open('parser/BeautifulAliexpressProducts.json', 'r', encoding='utf-8') as file:
+        products = json.load(file)
+    return jsonify(products)
 
 """Получение информации из поля ввода поискового запроса"""
 
