@@ -1,34 +1,84 @@
-/* Активация окна регистрации */
+/* Первый вход в окно авторизации */
 document.querySelector('#sign_in').addEventListener('click', function(event) {
+    showForm('sign_in');
+});
+
+/* Функция для отображения формы входа или регистрации. */
+function showForm(type) {
     let sign_in = $('.authorization');
     sign_in.empty();
-    let reg = `
+
+    let formContent = type === 'sign_in' ? getSignInForm() : getSignUpForm();
+    sign_in.append(formContent);
+
+    addEventListeners(type);
+
+    $('.dimmer').remove();
+    let dim = $('body');
+    dim.append('<div class="dimmer"></div>');
+}
+
+/* Форма авторизации */
+function getSignInForm() {
+    return `
         <div class="authorization_container">
             <div id="cross">
-                <a id="cross_a"><img id="cross_img" src="static/img/main ico/cross.png"></a>
+                <a id="cross_a"><img id="cross_img" src="static/img/main ico/cross.png" alt="закрыть"></a>
             </div>
             <form method="post" class="form-control">
-                <h1>
-                    Войдите в аккаунт
-                </h1>
+                <h1>Войдите в аккаунт</h1>
                 <input type="email" name='mail' placeholder="Введите почту" class="form-control">
                 <input type="password" name='password' placeholder="Введите пароль" class="form-control">
                 <button class="btn btn-success">Войти</button>
             </form>
             <div class="horizontal-line-reg"></div>
-            <button class="reg_btn" href="/registration">Создать аккаунт</button>
+            <button id="reg_btn" class="reg_btn" href="/registration">Создать аккаунт</button>
         </div>
-    `
-    sign_in.append(reg);
+    `;
+}
 
-    let dim = $('body');
-    dim.append(`<div class="dimmer"></div>`)
+/* Форма регистрации */
+function getSignUpForm() {
+    return `
+        <div class="authorization_container">
+            <div id="cross">
+                <a id="cross_a"><img id="cross_img" src="static/img/main ico/cross.png" alt="закрыть"></a>
+            </div>
+            <form method="post" class="form-control">
+                <h1>Создайте аккаунт</h1>
+                <p><input type="text" name='nick' placeholder="Введите имя" class="form-control"></p>
+                <input type="email" name='mail' placeholder="Введите почту" class="form-control">
+                <p>
+                    <input type="password" name='password1' placeholder="Введите пароль" class="form-control">
+                    <input type="password" name='password2' placeholder="Повторите пароль" class="form-control">
+                </p>
+                <p>
+                    <button class="btn btn-success">Зарегистрироваться</button>
+                </p>
+            </form>
+            <div class="horizontal-line-reg"></div>
+            <button id="login_btn" class="reg_btn" href="/registration">Войти</button>
+        </div>
+    `;
+}
 
-    document.querySelector('#cross_a').addEventListener('click', function(event) {
+/* обработка переключения между регистрацией и авторизацией. Закрытие всплывающего окна */
+function addEventListeners(type) {
+    document.querySelector('#cross_a')?.addEventListener('click', function(event) {
+        let sign_in = $('.authorization');
         sign_in.empty();
         $('.dimmer').remove();
-    } );
-} );
+    });
+
+    document.querySelector('#reg_btn')?.addEventListener('click', function(event) {
+        showForm('sign_up');
+    });
+
+    document.querySelector('#login_btn')?.addEventListener('click', function(event) {
+        showForm('sign_in');
+    });
+}
+
 
 
 
