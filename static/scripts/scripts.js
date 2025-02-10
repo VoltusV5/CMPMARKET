@@ -80,6 +80,33 @@ function addEventListeners(type) {
 }
 
 
+/* ЛК */
+document.querySelector('.theme').addEventListener('click', function(event) {
+    let lk = $('.main');
+    lk.empty();
+
+    let my_lk = `
+    <div class="account">
+    <div class="user-info">
+        <img src="https://stekloinstrument.ru/image/avatarka.png" alt="аватарка"/>
+        <h4>{{ current_user }}</h4>
+    </div>
+    <span>Корзина</span>
+    <span>Избранное</span>
+    </div>
+    <div class="premium-sub">
+        <h1>
+            Премиум подписка:
+        </h1>
+        <h3>
+            Статус: активно
+        </h3>
+    </div>
+    `;
+
+    lk.append(my_lk);
+});
+
 
 
 
