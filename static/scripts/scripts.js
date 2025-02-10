@@ -1,3 +1,34 @@
+/* Активация окна регистрации */
+document.querySelector('#sign_in').addEventListener('click', function(event) {
+    let sign_in = $('.authorization');
+    sign_in.empty();
+    let reg = `
+        <div class="authorization_container">
+            <div id="cross">
+                <a id="cross_a"><img id="cross_img" src="static/img/main ico/cross.png"></a>
+            </div>
+            <form method="post" class="form-control">
+                <h1>
+                    Войдите в аккаунт
+                </h1>
+                <input type="email" name='mail' placeholder="Введите почту" class="form-control">
+                <input type="password" name='password' placeholder="Введите пароль" class="form-control">
+                <button class="btn btn-success">Войти</button>
+            </form>
+            <div class="horizontal-line-reg"></div>
+            <button class="reg_btn" href="/registration">Создать аккаунт</button>
+        </div>
+    `
+    sign_in.append(reg);
+
+    let dim = $('body');
+    dim.append(`<div class="dimmer"></div>`)
+
+    document.querySelector('#cross_a').addEventListener('click', function(event) {
+        sign_in.empty();
+        $('.dimmer').remove();
+    } );
+} );
 
 
 
