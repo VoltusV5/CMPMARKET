@@ -1,3 +1,5 @@
+import string
+import random
 from flask import Flask, jsonify, render_template, redirect, request, flash
 from flask_sqlalchemy import SQLAlchemy
 import json
@@ -35,6 +37,9 @@ login_manager.login_message_category = "info"
 migrate = Migrate(app, db, render_as_batch=True)
 bcrypt = Bcrypt(app)
 
+
+def id_generator(size=6, chars=string.digits):
+    return ''.join(random.choice(chars) for x in range(size))
 
 
 def main(query):
@@ -93,22 +98,27 @@ def search():
     with open(query_json, "w", encoding="utf-8") as json_file:
         json.dump({"query": query}, json_file, ensure_ascii=False)
     return jsonify({"message": "Запрос успешно обработан", "query": query})
+
 '''Отрисовка карточек товара'''
+
 @app.route('/parser/ozon')
 def get_ozon_products():
     with open('parser/BeautifulOzonProducts.json', 'r', encoding='utf-8') as file:
         products = json.load(file)
     return jsonify(products)
+
 @app.route('/parser/wildberries')
 def get_wildberries_products():
     with open('parser/Beautiful_Wildberries_Products.json', 'r', encoding='utf-8') as file:
         products = json.load(file)
     return jsonify(products)
+
 @app.route('/parser/yandex')
 def get_yandexmarket_products():
     with open('parser/BeautifulYandexProducts.json', 'r', encoding='utf-8') as file:
         products = json.load(file)
     return jsonify(products)
+
 @app.route('/parser/aliexpress')
 def get_aliexpress_products():
     with open('parser/BeautifulAliexpressProducts.json', 'r', encoding='utf-8') as file:
@@ -128,7 +138,7 @@ def registration():
         msg = MIMEMultipart()
         from_email = "cmpmarket2@gmail.com"  # создал нам почту
         psw = "yqzo ntux nulx zgwi"  # пароль только для нашего приложения
-        message = "Сообщение о регистрации"
+        message = f"Ваш код для регистрации: {id_generator()}"
         nick = request.form["nick"]
         mail = request.form["mail"]
         if db.session.query(Login.id).filter_by(mail=mail).first() is not None:
