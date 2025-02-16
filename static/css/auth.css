@@ -108,3 +108,59 @@
     top: 0;
     z-index: 1040;
 }
+
+/* Восстановление пароля */
+.recover_password {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: auto;
+    margin-top: 0px;
+    margin-bottom: 16px;
+    text-decoration: underline;
+}
+
+.recover_password p:hover,
+#repeat_code:hover {
+    color: #4d4b4b;
+    cursor: pointer;
+}
+
+#repeat_code {
+    text-decoration: underline;
+}
+
+.recover_password p {
+    margin: 0px;
+}
+
+#back_a {
+    position: absolute;
+    justify-content: start;
+    top: 15px;
+    left: 1px;
+    width: 20%;
+    height: 15%;
+}
+
+#back_img {
+    width: 40%;
+    cursor: pointer;
+}
+
+
+.code_element {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.code_element-input {
+    margin-right: 10px;
+    font-size: 32px;
+}
+
+.code_element-input[type="text"] {
+    font-size: 32px;
+    font-weight: bold;
+}

@@ -1,3 +1,7 @@
+/* Проверка почты и пароля*/
+/* ... */
+
+
 /* Первый вход в окно авторизации */
 document.querySelector('#sign_in').addEventListener('click', function(event) {
     showForm('sign_in');
@@ -8,7 +12,25 @@ function showForm(type) {
     let sign_in = $('.authorization');
     sign_in.empty();
 
-    let formContent = type === 'sign_in' ? getSignInForm() : getSignUpForm();
+    let formContent = null;
+    switch (type) {
+        case 'sign_in':
+            formContent = getSignInForm();
+            break;
+        case 'sign_up':
+            formContent = getSignUpForm();
+            break;
+        case 'recover_password':
+            formContent = password_recovery();
+            break;
+        case 'email_code':
+            formContent = next_recover_code();
+            break;
+        case 'change_password':
+            formContent = change_password();
+            break;
+    }
+    
     sign_in.append(formContent);
 
     addEventListeners(type);
@@ -29,6 +51,7 @@ function getSignInForm() {
                 <h1>Войдите в аккаунт</h1>
                 <input type="email" name='mail' placeholder="Введите почту" class="form-control">
                 <input type="password" name='password' placeholder="Введите пароль" class="form-control">
+                <a id="recover_password" class="recover_password"><p>Не помню пароль</p></a>
                 <button class="btn btn-success">Войти</button>
             </form>
             <div class="horizontal-line-reg"></div>
@@ -62,23 +85,156 @@ function getSignUpForm() {
     `;
 }
 
+/* Форма восстановления пароля --- ввод почты */
+function password_recovery() {
+    return `
+        <div class="authorization_container">
+            <div id="cross">
+                <a id="cross_a"><img id="cross_img" src="static/img/main ico/cross.png" alt="закрыть"></a>
+                <a id="back_a"><img id="back_img" src="static/img/main ico/back.png" alt="закрыть"></a>
+            </div>
+            <form method="post" class="form-control">
+                <h1>Введите почту</h1>
+                <h3>Мы отправим на неё код. Когда введёте его, можно будет придумать новый пароль<h3>
+                <input type="email" name='mail' placeholder="Введите почту" class="form-control">
+                <button id="next_recover" class="btn btn-success">Продолжить</button>
+            </form>
+        </div>
+    `;
+}
+
+/* Форма восстановления пароля --- ввод кода */
+function next_recover_code() {
+    return `
+        <div class="authorization_container">
+            <div id="cross">
+                <a id="cross_a"><img id="cross_img" src="static/img/main ico/cross.png" alt="закрыть"></a>
+                <a id="back_a"><img id="back_img" src="static/img/main ico/back.png" alt="закрыть"></a>
+            </div>
+            <form method="post" class="form-control">
+                <h1>Введите код из письма</h1>
+                <h3>Отправили его на почту<h3>
+                <div class="code_element"> 
+                    <input type="text" class="code_element_1 code_element-input">
+                    <input type="text" class="code_element_2 code_element-input">
+                    <input type="text" class="code_element_3 code_element-input">
+                    <input type="text" class="code_element_4 code_element-input">
+                    <input type="text" class="code_element_5 code_element-input">
+                    <input type="text" class="code_element_6 code_element-input">
+                </div>
+                <a id="repeat_code">Отправить код повторно</a>
+            </form>
+        </div>
+    `;
+}
+
+/* Форма ввода нового пароля */
+function change_password() {
+    return `
+        <div class="authorization_container">
+            <div id="cross">
+                <a id="cross_a"><img id="cross_img" src="static/img/main ico/cross.png" alt="закрыть"></a>
+                <a id="back_a"><img id="back_img" src="static/img/main ico/back.png" alt="закрыть"></a>
+            </div>
+            <form method="post" class="form-control">
+                <h1>Поменяйте пароль</h1>
+                <input type="password" name='password1' placeholder="Введите пароль" class="form-control">
+                <input type="password" name='password1' placeholder="Подтвердите пароль" class="form-control">
+                <button id="change_password" class="btn btn-success">Готово</button>
+            </form>
+        </div>
+    `;
+}
+
 /* обработка переключения между регистрацией и авторизацией. Закрытие всплывающего окна */
 function addEventListeners(type) {
+
+    /* обработка получения и проверки пароля, почты */
+    document.querySelector('form-control')?.addEventListener('submit', function(event) {
+        event.preventDefault();
+        let email = document.getElementById("mail_id").value;
+        let password = document.getElementById("password_id").value;
+        console.log(email);
+        console.log("Форма отправлена");
+    });
+
+    /* обработка закрытия формы входа */
     document.querySelector('#cross_a')?.addEventListener('click', function(event) {
         let sign_in = $('.authorization');
         sign_in.empty();
         $('.dimmer').remove();
     });
 
+    /* обработка нажатия кнопки регистрации */
     document.querySelector('#reg_btn')?.addEventListener('click', function(event) {
         showForm('sign_up');
     });
 
+    /* обработка нажатия кнопки авторизации */
     document.querySelector('#login_btn')?.addEventListener('click', function(event) {
         showForm('sign_in');
     });
+
+    /* обработка нажатия кнопки "не помню пароль" */
+    document.querySelector('#recover_password')?.addEventListener('click', function(event) {
+        showForm('recover_password');
+    });
+
+    /* обработка нажатия кнопки стрелочки назад */
+    document.querySelector('#back_a')?.addEventListener('click', function(event) {
+        showForm('sign_in');
+    });
+
+    /* обработка нажатия кнопки после ввода email для смены пароля */
+    document.querySelector('#next_recover')?.addEventListener('click', function(event) {
+        showForm('email_code');
+    });
+
+    /* обработка ввода секретного кода подтверждения */
+    if (type === 'email_code') {
+        document.querySelectorAll('.code_element-input')?.forEach(function(input) {
+            input.addEventListener('input', function(event) {
+                let value = event.target.value;
+                if (!/^\d$/.test(value)) {
+                    value = value.replace(/\D/g, '');
+                    event.target.value = value;
+                }
+
+                if (value.length === 1) {
+                    const nextInput = event.target.nextElementSibling; 
+                    if (nextInput) {
+                        nextInput.focus();
+                    }
+                }
+
+                if (checkAllInputsFilled() === true) {
+                    showForm('change_password');
+                };
+            });
+            input.addEventListener('keydown', function(event) {
+                if (event.key === 'Backspace' && event.target.value === '') {
+                    const previousInput = event.target.previousElementSibling;
+                    if (previousInput) {
+                        previousInput.focus();
+                    }
+                }
+            });
+        });
+    };
+
 }
 
+/* Проверка заполненности всех ячеек секретного кода */
+function checkAllInputsFilled() {
+    const allInputs = document.querySelectorAll('.code_element-input');
+    let allFilled = true;
+    allInputs.forEach(function(input) {
+        if (input.value.length !== 1 || !/^\d$/.test(input.value)) {
+            allFilled = false;
+        }
+    });
+    return allFilled;
+}
 
 /* ЛК */
 document.querySelector('.theme').addEventListener('click', function(event) {
