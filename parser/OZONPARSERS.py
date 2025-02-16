@@ -2,7 +2,6 @@
 #Он не запуститься если у вас не установлен драйвер на хром
 import json
 import time
-import threading
 import undetected_chromedriver as uc
 from bs4 import BeautifulSoup
 from selenium.webdriver.common.by import By
@@ -11,7 +10,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 from Algoritm import sorting_products
 
-file_lock = threading.Lock()
+
 
 def sort(products):
     # with open('Products_ozon.json','r',encoding='UTF-8') as file:
@@ -22,7 +21,7 @@ def sort(products):
     s = []
     for i in range(4):
         s.append(onion[i][1])
-    with open("parser/BeautifulOzonProducts.json", 'w', encoding="UTF-8") as file:
+    with open("BeautifulOzonProducts.json", 'w', encoding="UTF-8") as file:
         json.dump(s,file,indent=4,ensure_ascii=False)
         
 

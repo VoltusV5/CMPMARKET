@@ -5,7 +5,7 @@ import os
 import time
 import sys
 import smtplib
-from multiprocessing import Process
+from threading import Thread
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -38,21 +38,37 @@ bcrypt = Bcrypt(app)
 
 
 def main(query):
-    p1 = Process(target=mainYA,args=(query,))
-    p1.start()    
-    time.sleep(4)
-    p2 = Process(target=mainWB,args=(query,))
+    options = uc.ChromeOptions()
+    options.add_argument('--blink-settings=imagesEnabled=false')
+    options.add_argument('--headless')  # Включаем headless-режим
+    options.add_argument('--no-sandbox')  # Отключаем sandbox для повышения стабильности
+    options.add_argument('--disable-dev-shm-usage')  # Решает проблемы с памятью в headless-режиме
+
+    user_agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
+    options.add_argument(f'--user-agent={user_agent}')
+
+    driver = uc.Chrome(use_subprocess=False,options=options, version_main=132)
+    driver.implicitly_wait(1)
+    driver.get("about:blank")  # Начальная пустая страница
+    tab_number = [1, 2, 3]
+    urls = [
+        "https://www.wildberries.ru/",
+        "https://market.yandex.ru",
+        "https://aliexpress.ru"
+    ]
+    p1 = Thread(target=mainYA,args=(driver,urls[1], tab_number[0],query))
+    p1.start()
+    time.sleep(2)    
+    p2 = Thread(target=mainWB,args=(driver,urls[0], tab_number[1],query))
     p2.start()
-    time.sleep(4)
-    p3 = Process(target=mainOZON,args=(query,))
-    p3.start()
-    time.sleep(4)
-    p4 = Process(target=mainAli, args=(query,))
+    time.sleep(2)   
+    p4 = Thread(target=mainAli, args=(driver,urls[2], tab_number[2],query))
     p4.start()
+    time.sleep(2)   
     p1.join()
     p2.join()
-    p3.join()
     p4.join()
+    driver.quit()
 
 
 

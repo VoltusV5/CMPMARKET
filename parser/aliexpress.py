@@ -56,33 +56,35 @@ def parser(html:str ='') -> dict:
     #     json.dump(s,file,indent=4,ensure_ascii=False)
     sort(s)
 
-def get_products_links(item_name:str = 'Айфон 15') -> None:
-    '''функция принимает запрос от пользователя и начинает суету'''
+def get_products_links(driver,url, tab_number, item_name:str = 'Айфон 15') -> None:
+    # '''функция принимает запрос от пользователя и начинает суету'''
     t = random.uniform(2, 5)
-    options = uc.ChromeOptions()
-    options.add_argument('--blink-settings=imagesEnabled=false')
+    # options = uc.ChromeOptions()
+    # options.add_argument('--blink-settings=imagesEnabled=false')
     
-    options.add_argument('--headless')  # Включаем headless-режим
-    options.add_argument('--no-sandbox')  # Отключаем sandbox для повышения стабильности
-    options.add_argument('--disable-dev-shm-usage')  # Решает проблемы с памятью в headless-режиме
+    # options.add_argument('--headless')  # Включаем headless-режим
+    # options.add_argument('--no-sandbox')  # Отключаем sandbox для повышения стабильности
+    # options.add_argument('--disable-dev-shm-usage')  # Решает проблемы с памятью в headless-режиме
 
-    user_agent = [
-        "Mozilla/5.0 (Linux; Android 7.0; Moto G (4)) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4143.7 Mobile Safari/537.36 Chrome-Lighthouse",
-        "Mozilla/5.0 (iPhone; CPU iPhone OS 13_6_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.1.2 Mobile/15E148 Safari/604.1",
-        "Mozilla/5.0 (iPhone; CPU iPhone OS 13_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.4 Mobile/15E148 Safari/604.1",
-        "Mozilla/5.0 (Linux; Android 9; Redmi Note 7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.111 Mobile Safari/537.36",
-        "Mozilla/5.0 (Linux; Android 9.0; Pixel 2 XL Build/PPP4.180612.004; Windows 10 Mobile) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3552.0 Mobile Safari/537.36",
-        "Mozilla/5.0 (Linux; Android 9; FLA-LX1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.101 Mobile Safari/537.36",
-        "Mozilla/5.0 (Linux; Android 10; Redmi Note 7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.210 Mobile Safari/537.36",
-        ]
-    options.add_argument(f'--user-agent={user_agent[random.randint(0,6)]}')
-    with file_lock:
-        driver = uc.Chrome(use_subprocess=False,options=options, version_main=132)
-        driver.implicitly_wait(t)
+    # user_agent = [
+    #     "Mozilla/5.0 (Linux; Android 7.0; Moto G (4)) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4143.7 Mobile Safari/537.36 Chrome-Lighthouse",
+    #     "Mozilla/5.0 (iPhone; CPU iPhone OS 13_6_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.1.2 Mobile/15E148 Safari/604.1",
+    #     "Mozilla/5.0 (iPhone; CPU iPhone OS 13_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.4 Mobile/15E148 Safari/604.1",
+    #     "Mozilla/5.0 (Linux; Android 9; Redmi Note 7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.111 Mobile Safari/537.36",
+    #     "Mozilla/5.0 (Linux; Android 9.0; Pixel 2 XL Build/PPP4.180612.004; Windows 10 Mobile) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3552.0 Mobile Safari/537.36",
+    #     "Mozilla/5.0 (Linux; Android 9; FLA-LX1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.101 Mobile Safari/537.36",
+    #     "Mozilla/5.0 (Linux; Android 10; Redmi Note 7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.210 Mobile Safari/537.36",
+    #     ]
+    # options.add_argument(f'--user-agent={user_agent[random.randint(0,6)]}')
+    
+    # driver = uc.Chrome(use_subprocess=False,options=options, version_main=132)
+    # driver.implicitly_wait(t)
 
-        driver.get(url='https://aliexpress.ru')
-        time.sleep(t)
-
+    # driver.get(url='https://aliexpress.ru')
+    # time.sleep(t)
+    driver.execute_script(f"window.open('{url}', 'tab{tab_number}');")  # Открываем новую вкладку
+    driver.switch_to.window(f'tab{tab_number}')  # Переключаемся на неё
+    time.sleep(3)  # Ждём загрузки
     find_input = driver.find_element(By.NAME, 'SearchText')
     find_input.clear()
     find_input.send_keys(item_name)
@@ -92,12 +94,16 @@ def get_products_links(item_name:str = 'Айфон 15') -> None:
     time.sleep(t)
 
     html = str(driver.page_source)
+    WebDriverWait(driver, 10).until(
+            EC.presence_of_element_located((By.TAG_NAME, "body")))
+    driver.quit()
+
     parser(html)
 
 
-def mainAli(item_name='Телефон'):
-    get_products_links(item_name)
+def mainAli(driver,url, tab_number, item_name:str = 'Айфон 15'):
+    get_products_links(driver,url, tab_number, item_name)
 
 
 if __name__=='__main__':
-    main()
+    mainAli()

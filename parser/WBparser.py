@@ -21,7 +21,7 @@ def sort(products):
     s = []
     for i in range(4):
         s.append(onion[i][1])
-    with open("parser/Beautiful_Wildberries_Products.json", 'w', encoding="UTF-8") as file:
+    with open("parser/Beautiful_Wildberries_Products.json", 'w', encoding="UTF-8") as file: ##############################
         json.dump(s,file,indent=4,ensure_ascii=False)
 
 def parser(html:str):
@@ -46,27 +46,30 @@ def parser(html:str):
     #     json.dump(s, file, indent=4, ensure_ascii=False)
     sort(s)    
 
-def driver1(item_name:str = 'макасины'):
-    options = uc.ChromeOptions()
-    options.add_argument('--blink-settings=imagesEnabled=false')
-    cache_dir = r"C:\temp\cache_wb"  # Уникальный путь
-    user_data_dir = r"C:\temp\profile_wb"  # Уникальный профиль
-    os.makedirs(cache_dir, exist_ok=True)
-    os.makedirs(user_data_dir, exist_ok=True)
-    options.add_argument('--headless')  # Включаем headless-режим
-    options.add_argument('--no-sandbox')  # Отключаем sandbox для повышения стабильности
-    options.add_argument('--disable-dev-shm-usage')  # Решает проблемы с памятью в headless-режиме
+def driver1(driver,url, tab_number, item_name:str = 'макасины'):
+    # options = uc.ChromeOptions()
+    # options.add_argument('--blink-settings=imagesEnabled=false')
+    # cache_dir = r"C:\temp\cache_wb"  # Уникальный путь
+    # user_data_dir = r"C:\temp\profile_wb"  # Уникальный профиль
+    # os.makedirs(cache_dir, exist_ok=True)
+    # os.makedirs(user_data_dir, exist_ok=True)
+    # options.add_argument('--headless')  # Включаем headless-режим
+    # options.add_argument('--no-sandbox')  # Отключаем sandbox для повышения стабильности
+    # options.add_argument('--disable-dev-shm-usage')  # Решает проблемы с памятью в headless-режиме
 
-    user_agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
-    options.add_argument(f'--user-agent={user_agent}')
+    # user_agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
+    # options.add_argument(f'--user-agent={user_agent}')
 
-    driver = uc.Chrome(use_subprocess=False,options=options, version_main=132, executable_path=r"C:\temp\chromedriver.exe",
-        cache_dir=cache_dir, user_data_dir=user_data_dir)
-    driver.implicitly_wait(1)
+    # driver = uc.Chrome(use_subprocess=False,options=options, version_main=132,
+    #     cache_dir=cache_dir, user_data_dir=user_data_dir)
+    # driver.implicitly_wait(1)
 
-    url = 'https://www.wildberries.ru/'
-    driver.get(url=url)
-    time.sleep(0.05)
+    # url = 'https://www.wildberries.ru/'
+    # driver.get(url=url)
+    # time.sleep(0.05)
+    driver.execute_script(f"window.open('{url}', 'tab{tab_number}');")  # Открываем новую вкладку
+    driver.switch_to.window(f'tab{tab_number}')  # Переключаемся на неё
+    time.sleep(3)  # Ждём загрузки
 
     find_input = driver.find_element(By.ID, 'searchInput')
     find_input.clear()
@@ -77,14 +80,15 @@ def driver1(item_name:str = 'макасины'):
     time.sleep(2.5)
 
     html_code = str(driver.page_source)
-
+    WebDriverWait(driver, 10).until(
+            EC.presence_of_element_located((By.TAG_NAME, "body")))
     parser(html_code)
 
     driver.quit()
 
-def mainWB(item_name: str):
-    driver1(item_name)
+def mainWB(driver,url, tab_number, item_name:str = 'Айфон 15'):
+    driver1(driver,url, tab_number, item_name)
 
 
 if __name__=='__main__':
-    mainWB()
+    mainWB('Телефон')
